@@ -130,6 +130,7 @@
         }
 
         .game-area{display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:start}
+        /* Mobile: Stacks the two columns */
         @media (max-width:850px){.game-area{grid-template-columns:1fr}}
 
         .problem{
@@ -199,6 +200,55 @@
             background: var(--good); color: white; font-weight: 700; padding: 10px 15px; 
             border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s;
         }
+        
+        /* --- MOBILE OPTIMIZATION (Fix Tampilan HP) --- */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px; /* Kurangi padding body */
+            }
+            .card {
+                padding: 20px; /* Kurangi padding kartu utama */
+                border-radius: 15px; 
+            }
+            
+            .problem, .sidebar {
+                padding: 20px; /* Kurangi padding pada Problem dan Sidebar */
+            }
+
+            .game-area{
+                gap: 20px; /* Kurangi jarak antar elemen */
+            }
+
+            h1{
+                font-size: 24px;
+            }
+            p.lead {
+                font-size: 1em;
+            }
+
+            .question {
+                font-size: 48px; /* Kurangi ukuran font pertanyaan */
+            }
+            
+            .answers{
+                gap: 15px; /* Kurangi jarak antar tombol jawaban */
+            }
+            .choice{
+                font-size: 20px; /* Ukuran font jawaban lebih kecil */
+                padding: 15px; 
+            }
+            
+            .controls {
+                gap: 10px; /* Kurangi jarak antar kontrol */
+            }
+
+            /* Tombol utama lebih efisien */
+            button#startBtn, button#resetBtn {
+                padding: 12px 20px;
+                font-size: 1em;
+            }
+        }
+        /* --- END MOBILE OPTIMIZATION --- */
     </style>
 </head>
 <body>
@@ -320,6 +370,7 @@
                                 <li>**Streak** 3x benar = Bonus Skor!</li>
                             </ul>
                         </div>
+
                         <div class="footer">
                             <button id="openShopBtn">Toko Poin</button>
                             <button id="showTable">Tampilkan Tabel Perkalian</button>
@@ -387,7 +438,7 @@
         const secretCodeInput = document.getElementById('secretCodeInput');
         const submitCodeBtn = document.getElementById('submitCodeBtn');
         const gateMessageEl = document.getElementById('gateMessage');
-        const SECRET_CODE = "ZAHID JELEK"; 
+        const SECRET_CODE = "ZAHID JELEK"; // Dikembalikan ke kode yang benar
         const ACCESS_KEY = "ACCESS_GRANTED_BY_CODE"; 
         
         const questionEl = document.getElementById('question');
@@ -414,7 +465,7 @@
         let inSession = false;
         
         let currentStreak = 0;
-        let maxStreak = 0; // Untuk cek Quest Combo
+        let maxStreak = 0; 
         let errorLog = [];
         let totalBonusPoints = 0;
         let skipTokens = 0;
