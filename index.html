@@ -314,13 +314,12 @@
                         </div>
 
                         <div style="margin-top:20px">
-                            <p style="font-size:14px;color:#64748b;font-weight:600;">Petunjuk Cepat:</p>
-                            <ul style="padding-left:20px;margin:10px 0 0;color:#334155;font-size:15px;">
+                            <p style="font-size:14px;color:var(--text-color);font-weight:600;opacity:0.7;">Petunjuk Cepat:</p>
+                            <ul style="padding-left:20px;margin:10px 0 0;color:var(--text-color);font-size:15px;">
                                 <li>Gunakan angka **1, 2, 3, 4** pada keyboard untuk memilih jawaban.</li>
                                 <li>**Streak** 3x benar = Bonus Skor!</li>
                             </ul>
                         </div>
-
                         <div class="footer">
                             <button id="openShopBtn">Toko Poin</button>
                             <button id="showTable">Tampilkan Tabel Perkalian</button>
@@ -431,7 +430,6 @@
 
         // --- FUNGSI THEME & SOUND ---
         const THEMES = {
-            // ... (Theme definitions are correct)
             'ceria': {
                 '--bg': '#e0f2fe', '--card': '#ffffff', '--accent': '#22d3ee', '--accent-dark': '#0891b2', 
                 '--text-color': '#0f172a', '--label-bg': '#f0f9ff', '--label-border': '#bae6fd', 
@@ -744,7 +742,7 @@
                 e.currentTarget.classList.add('correct');
                 score += 10;
                 correctCount += 1;
-                playCorrectSound(); // <<< DIPANGGIL KEMBALI
+                playCorrectSound(); 
 
                 currentStreak += 1;
                 maxStreak = Math.max(maxStreak, currentStreak);
@@ -768,7 +766,7 @@
                 e.currentTarget.classList.add('wrong');
                 const right = buttons.find(b=> Number(b.dataset.val) === current.correct);
                 if(right) right.classList.add('correct');
-                playWrongSound(); // <<< DIPANGGIL KEMBALI
+                playWrongSound(); 
                 
                 currentStreak = 0;
                 streakDisplayEl.innerHTML = `Combo: x0`;
