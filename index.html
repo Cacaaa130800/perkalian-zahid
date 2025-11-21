@@ -5,52 +5,107 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Game Perkalian Zahid</title>
   <style>
-    :root{--bg:#f7fafc;--card:#ffffff;--accent:#06b6d4;--good:#10b981;--bad:#ef4444}
+    /* Ganti skema warna menjadi lebih ceria dan interaktif */
+    :root{
+      --bg: #e0f2fe; /* Light Blue Background */
+      --card: #ffffff;
+      --accent: #22d3ee; /* Cyan/Turquoise Accent */
+      --good: #4ade80; /* Brighter Green */
+      --bad: #f87171; /* Coral Red */
+      --shadow-color: rgba(2,6,23,0.1);
+    }
+    
     *{box-sizing:border-box}
     body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
     .wrap{width:100%;max-width:720px}
-    .card{background:var(--card);border-radius:14px;box-shadow:0 6px 30px rgba(2,6,23,0.08);padding:20px}
-    h1{margin:0 0 8px;font-size:20px}
-    p.lead{margin:0 0 16px;color:#475569}
+    /* Shadow lebih tebal dan berwarna sedikit untuk kesan 3D */
+    .card{background:var(--card);border-radius:18px;box-shadow:0 10px 40px var(--shadow-color);padding:25px} 
+    h1{margin:0 0 8px;font-size:24px; color:#1e3a8a;} /* Judul lebih besar dan biru tua */
+    p.lead{margin:0 0 20px;color:#475569}
 
-    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-    select,input[type=number]{padding:8px 10px;border-radius:8px;border:1px solid #e2e8f0}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
     
-    /* --- CSS Tambahan untuk Gate Level Terkunci --- */
+    /* Label untuk Kontrol lebih menonjol */
+    .controls label{
+      background: #f0f9ff;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #bae6fd;
+      font-size: 14px;
+    }
+    
+    select,input[type=number]{padding:8px 10px;border-radius:8px;border:1px solid #e2e8f0; margin-left: 5px;}
+    
+    /* CSS Gate Level Terkunci */
     select#level:disabled{
       background:#f1f5f9;
       color:#94a3b8;
       cursor:not-allowed;
     }
-    /* --------------------------------------------- */
     
-    button{background:var(--accent);color:#fff;padding:10px 14px;border:none;border-radius:10px;cursor:pointer}
+    /* Tombol Start/Reset lebih besar dan efek shadow */
+    button{
+      background:var(--accent);color:#fff;padding:12px 18px;border:none;border-radius:12px;cursor:pointer;
+      font-weight: 700;
+      transition: all .15s ease;
+      box-shadow: 0 4px 0 #0891b2; /* Shadow 3D look */
+      transform: translateY(0);
+    }
+    button:active{
+      box-shadow: 0 0px 0 #0891b2;
+      transform: translateY(4px);
+    }
 
-    .game-area{display:grid;grid-template-columns:1fr 260px;gap:18px;align-items:start}
+    .game-area{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
     @media (max-width:760px){.game-area{grid-template-columns:1fr}}
 
-    .problem{background:#f1f5f9;padding:20px;border-radius:12px;text-align:center}
-    .question{font-size:36px;font-weight:700;margin:0}
-    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
-    .meta .small{font-size:14px;color:#334155}
+    /* Tampilan Soal lebih cerah */
+    .problem{background:#fff1f2; padding:25px; border-radius:16px; text-align:center; border: 2px solid #fda4af;}
+    .question{font-size:48px;font-weight:900;margin:0; color:#dc2626;} /* Soal lebih besar dan merah */
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:15px; padding-top: 10px; border-top: 1px solid #fee2e2;}
+    .meta .small{font-size:16px;color:#334155; font-weight: 600;}
 
-    .answers{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
-    .choice{padding:14px;border-radius:10px;background:#fff;border:1px solid #e2e8f0;cursor:pointer;font-weight:600;transition:transform .12s ease,box-shadow .12s ease}
-    .choice:active{transform:scale(.99)}
-    .choice.correct{border-color:var(--good);box-shadow:0 6px 18px rgba(16,185,129,.12)}
-    .choice.wrong{border-color:var(--bad);box-shadow:0 6px 18px rgba(239,68,68,.08)}
+    .answers{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:25px}
+    
+    /* Efek interaktif pada pilihan jawaban */
+    .choice{
+      padding:16px;border-radius:12px;background:#fff;border:1px solid #e2e8f0;cursor:pointer;font-weight:700;
+      font-size: 22px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: all .15s ease;
+    }
+    .choice:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+    }
+    .choice:active{transform:scale(.98)}
+    
+    /* Warna feedback */
+    .choice.correct{border-color:var(--good);background: #f0fdf4; box-shadow:0 6px 18px rgba(16,185,129,.3); color: #059669;}
+    .choice.wrong{border-color:var(--bad);background: #fef2f2; box-shadow:0 6px 18px rgba(239,68,68,.2); color: #dc2626;}
 
-    .sidebar{padding:16px;background:#f8fafc;border-radius:10px}
-    .score{font-size:28px;font-weight:800}
-    .time{font-size:20px;color:#0f172a;margin-top:8px}
+    .sidebar{padding:20px;background:#fff;border-radius:16px; box-shadow:0 4px 20px var(--shadow-color); border: 1px solid #e2e8f0;}
+    .score{font-size:32px;font-weight:900; color:#1d4ed8;} /* Skor lebih besar dan biru */
+    .time{font-size:22px;color:#0f172a;margin-top:10px}
 
     .result{display:none;padding:18px;text-align:center}
     .result.show{display:block}
+    .result h2 { color: #1e3a8a; }
 
-    .small-muted{font-size:13px;color:#64748b}
-    .footer{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+    .small-muted{font-size:14px;color:#64748b}
+    .footer{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
 
-    .hint{font-size:13px;color:#334155;margin-top:10px}
+    .hint{font-size:14px;color:#475569;margin-top:15px}
+    
+    /* Tombol di Footer */
+    #showTable, #skip {
+      box-shadow: none;
+      transform: none;
+      padding: 10px 14px;
+      font-weight: 600;
+    }
+    #showTable { background: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e6; }
+    #skip { background: #fde68a; color: #92400e; border: 1px solid #fcd34d; }
   </style>
 </head>
 <body>
@@ -83,7 +138,7 @@
         </label>
 
         <button id="startBtn">Mulai</button>
-        <button id="resetBtn" style="background:#64748b">Reset Progres</button>
+        <button id="resetBtn" style="background:#64748b; box-shadow: 0 4px 0 #475569;">Reset Progres</button>
       </div>
 
       <div class="game-area">
@@ -110,7 +165,7 @@
             <h3 style="margin-top:25px">Leaderboard</h3>
             <table id="leaderboard" style="width:100%;border-collapse:collapse;margin-top:8px">
               <thead>
-                <tr><th style="text-align:left;padding:6px;border-bottom:1px solid #cbd5e1">Peringkat</th><th style="text-align:left;padding:6px;border-bottom:1px solid #cbd5e1">Skor</th></tr>
+                <tr><th style="text-align:left;padding:6px;border-bottom:1px solid #cbd5e1">Peringkat (Level)</th><th style="text-align:left;padding:6px;border-bottom:1px solid #cbd5e1">Skor</th></tr>
               </thead>
               <tbody></tbody>
             </table>
@@ -172,7 +227,7 @@
     let timeLeft = 0;
     let inSession = false;
     
-    // --- Variabel Gate Baru ---
+    // --- Variabel Gate Progres ---
     const MIN_SCORE_MEDIUM = 150; 
     const MIN_SCORE_HARD = 300;  
     let playerProgress = {
@@ -197,7 +252,9 @@
       const choices = new Set([correct]);
       while(choices.size < 4){
         // variasi kandidat
-        let perturb = correct + randInt(-Math.floor(max/2), Math.floor(max/2)) + randInt(-3,3);
+        // Pastikan variasi tidak terlalu dekat tapi juga tidak terlalu jauh
+        let perturb = correct + randInt(-Math.floor(max*1.5), Math.floor(max*1.5));
+        if(Math.abs(perturb - correct) < 2) perturb += randInt(-3, 3); // Jarak minimal 2
         if(perturb <= 0) perturb = randInt(1, max*max);
         choices.add(perturb);
       }
@@ -293,7 +350,7 @@
     }
     
     
-    // --- FUNGSI GATE BARU ---
+    // --- FUNGSI GATE PROGRES ---
     function saveProgress(){
       localStorage.setItem('zahid_progress', JSON.stringify(playerProgress));
     }
@@ -406,12 +463,13 @@
       
       // Reset Progres Gate dan Leaderboard
       localStorage.removeItem('zahid_progress');
-      localStorage.removeItem('zahid_board'); // Hapus leaderboard juga saat reset progres
+      localStorage.removeItem('zahid_board'); 
+      localStorage.removeItem('zahid_name_check');
       playerProgress = { unlockedMedium: false, unlockedHard: false };
       applyLevelGate();
       document.querySelector('#leaderboard tbody').innerHTML = '';
       
-      alert('Semua progres dan Leaderboard telah di-reset!');
+      alert('Semua progres, leaderboard, dan konfirmasi awal telah di-reset!');
     });
 
     playAgain.addEventListener('click', ()=>{
