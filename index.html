@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Game Perkalian Zahid</title>
+    <title>Game Perkalian Zahid 🚀</title>
     <style>
         /* SKEMA WARNA GAYA GAME QUIZ (HIGH CONTRAST) */
         :root{
-            --bg: #f3f4f6; /* Abu-abu Sangat Terang */
+            --bg: #f3f4f6;
             --card: #ffffff;
-            --accent: #4c46e4; /* Ungu Cerah */
+            --accent: #4c46e4;
             --accent-dark: #3733a1;
-            --good: #10b981; /* Hijau Sukses */
-            --bad: #ef4444; /* Merah Gagal */
+            --good: #10b981;
+            --bad: #ef4444;
             --shadow-color: rgba(76, 70, 228, 0.2); 
+            --combo: #f59e0b; /* Orange for combo */
         }
         
         *{box-sizing:border-box}
@@ -27,12 +28,8 @@
         .controls{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;align-items:center;}
         
         .controls label{
-            background:#eef2ff;
-            padding:10px 14px;
-            border-radius:12px;
-            border:1px solid #c7d2fe;
-            font-size:15px;
-            font-weight:600;
+            background:#eef2ff;padding:10px 14px;border-radius:12px;
+            border:1px solid #c7d2fe;font-size:15px;font-weight:600;
         }
         
         select,input[type=number]{padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1;margin-left:8px;font-size:15px;}
@@ -41,9 +38,7 @@
         /* Tombol Utama dengan efek 3D */
         button#startBtn{
             background:var(--accent);color:#fff;padding:16px 30px;border:none;border-radius:12px;cursor:pointer;
-            font-weight:800;
-            font-size:1.1em;
-            transition:all .2s ease;
+            font-weight:800;font-size:1.1em;transition:all .2s ease;
             box-shadow:0 4px 0 var(--accent-dark); 
             transform:translateY(0);
         }
@@ -59,6 +54,7 @@
         }
         button:hover:not(#startBtn):not(#resetBtn){background:#9ca3af;color:#fff;}
         
+        /* LAYOUT UTAMA: Dua Kolom di Desktop, Satu Kolom di Mobile */
         .game-area{display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:start}
         @media (max-width:850px){.game-area{grid-template-columns:1fr}}
 
@@ -83,10 +79,10 @@
         }
         
         /* Warna berbeda untuk setiap tombol jawaban */
-        .answers button:nth-child(1){background:#3b82f6;} /* Biru */
-        .answers button:nth-child(2){background:#ef4444;} /* Merah */
-        .answers button:nth-child(3){background:#facc15;} /* Kuning */
-        .answers button:nth-child(4){background:#10b981;} /* Hijau */
+        .answers button:nth-child(1){background:#3b82f6;} 
+        .answers button:nth-child(2){background:#ef4444;} 
+        .answers button:nth-child(3){background:#facc15;} 
+        .answers button:nth-child(4){background:#10b981;} 
         
         .choice:hover{transform:scale(1.02);opacity:0.9;}
         .choice:active{transform:scale(0.98);box-shadow:none;}
@@ -109,6 +105,33 @@
         #showTable, #skip {width:100%;font-weight:700;}
         #showTable {background:#e5e7eb;color:#374151;}
         #skip {background:#fee2e2;color:#991b1b;}
+
+        /* ===== OPTIMASI MOBILE UNTUK LAYAR SANGAT KECIL (HP) ===== */
+        @media (max-width:500px){
+            body{padding:10px}
+            .card{padding:20px}
+            
+            /* Kontrol */
+            .controls{gap:10px;margin-bottom:20px}
+            .controls label{padding:8px 10px; font-size: 14px;}
+            select,input[type=number]{font-size: 14px;}
+
+            /* Soal */
+            .problem{padding:25px;}
+            .question{font-size:48px}
+            .meta .small{font-size:16px;}
+
+            /* Jawaban */
+            .answers{gap:15px;margin-top:20px}
+            .choice{padding:18px;font-size:20px}
+            
+            /* Sidebar */
+            .sidebar{padding:20px;}
+            .score{font-size:36px}
+            .time{font-size:24px}
+            .footer{margin-top:20px;gap:10px}
+            .result h2{font-size:24px;}
+        }
     </style>
 </head>
 <body>
@@ -172,13 +195,18 @@
                             </thead>
                             <tbody></tbody>
                         </table>
-                    </div>
+
+                        <h3 style="margin-top:30px;color:#ef4444;">Review Kesalahan (Pelajari!)</h3>
+                        <ul id="errorReview" style="list-style-type:none;padding:0;text-align:left;font-size:16px;">
+                            </ul>
+                        </div>
                 </div>
 
                 <aside class="sidebar">
                     <div class="score">Skor: <span id="score">0</span></div>
                     <div class="time" id="timer">—</div>
-
+                    
+                    <div id="streakDisplay" style="margin-top:15px;font-size:20px;font-weight:700;color:var(--good);min-height:24px;"></div>
                     <div style="margin-top:20px">
                         <p style="font-size:14px;color:#64748b;font-weight:600;">Petunjuk Cepat:</p>
                         <ul style="padding-left:20px;margin:10px 0 0;color:#334155;font-size:15px;">
@@ -195,9 +223,11 @@
             </div>
         </div>
     </div>
-
+    
+    <audio id="correctSound" src="correct.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
     <script>
-        // Logika JavaScript sama dan sudah dijamin bersih
+        // Logika JavaScript sama dan sudah bersih, kini termasuk semua fitur baru
         const startBtn = document.getElementById('startBtn');
         const resetBtn = document.getElementById('resetBtn');
         const playAgain = document.getElementById('playAgain');
@@ -215,9 +245,15 @@
         const resultEl = document.getElementById('result');
         const resultTitle = document.getElementById('resultTitle');
         const resultText = document.getElementById('resultText');
+        const streakDisplayEl = document.getElementById('streakDisplay');
+        const errorReviewEl = document.getElementById('errorReview');
 
         const correctCountEl = document.getElementById('correctCount');
         const qIndexEl = document.getElementById('qIndex');
+
+        // Sound Elements
+        const correctSound = document.getElementById('correctSound');
+        const wrongSound = document.getElementById('wrongSound');
 
         let current = {};
         let score = 0;
@@ -228,12 +264,33 @@
         let timeLeft = 0;
         let inSession = false;
         
+        // VARIABEL UNTUK FITUR BARU
+        let currentStreak = 0;
+        let timeQuestionDisplayed = 0; // Waktu soal ditampilkan (untuk Time Bonus)
+        let errorLog = []; // Log kesalahan
+        
         const MIN_SCORE_MEDIUM = 150; 
         const MIN_SCORE_HARD = 300;  
         let playerProgress = {
             unlockedMedium: false,
             unlockedHard: false
         };
+
+        // --- FUNGSI AUDIO ---
+        function playCorrectSound() {
+            if (correctSound) {
+                correctSound.currentTime = 0;
+                correctSound.play().catch(e => console.log('Audio error:', e));
+            }
+        }
+        function playWrongSound() {
+            if (wrongSound) {
+                wrongSound.currentTime = 0;
+                wrongSound.play().catch(e => console.log('Audio error:', e));
+            }
+        }
+        // --- END FUNGSI AUDIO ---
+
 
         function getRangeForLevel(level){
             if(level === 'easy') return 5;
@@ -252,7 +309,7 @@
             while(choices.size < 4){
                 let perturb = correct + randInt(-Math.floor(max*1.5), Math.floor(max*1.5));
                 if(Math.abs(perturb - correct) < 2) perturb += randInt(-3, 3);
-                if(perturb <= 0) perturb = randInt(1, max*max);
+                if(perturb <= 0 || perturb === correct) perturb = randInt(1, max*max);
                 choices.add(perturb);
             }
             const arr = Array.from(choices).sort(()=>Math.random()-0.5);
@@ -266,7 +323,6 @@
             current.choices.forEach((ch, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'choice';
-                // Tampilkan nomor jawaban di dalam tombol
                 btn.innerHTML = `<span style="font-size: 0.5em; display: block; margin-bottom: 5px; opacity: 0.8;">${index + 1}</span>${ch}`;
                 btn.setAttribute('data-val', ch);
                 btn.addEventListener('click', onAnswer);
@@ -275,6 +331,9 @@
 
             qIndexEl.textContent = qIndex;
             correctCountEl.textContent = correctCount;
+
+            // SET WAKTU SOAL DITAMPILKAN (Untuk Time Bonus)
+            timeQuestionDisplayed = Date.now();
         }
 
         function onAnswer(e){
@@ -286,12 +345,57 @@
 
             if(val === current.correct){
                 e.currentTarget.classList.add('correct');
-                score += 10;
+                score += 10; // BASE SCORE
                 correctCount += 1;
+                playCorrectSound();
+
+                // ===== LOGIKA STREAK/COMBO & BONUS POIN =====
+                currentStreak += 1;
+                let bonus = 0;
+
+                if(currentStreak >= 3 && currentStreak % 3 === 0){
+                    if(currentStreak === 3) bonus = 5; 
+                    else if(currentStreak === 6) bonus = 10;
+                    else if(currentStreak >= 9) bonus = 15;
+                    
+                    score += bonus;
+                    streakDisplayEl.innerHTML = `🔥 Combo x${currentStreak} (+${bonus} pts)!`;
+                    streakDisplayEl.style.color = 'var(--combo)';
+                } else {
+                    streakDisplayEl.innerHTML = `Combo: x${currentStreak}`;
+                    streakDisplayEl.style.color = 'var(--good)';
+                }
+                // ===== END STREAK/COMBO LOGIC =====
+
+                // ===== LOGIKA TIME BONUS (Hanya di mode Timed) =====
+                if(modeEl.value === 'timed'){
+                    const timeTaken = Date.now() - timeQuestionDisplayed;
+                    let timeBonus = 0;
+                    if(timeTaken < 1500) timeBonus = 5; // Sangat cepat (<1.5s)
+                    else if(timeTaken < 3000) timeBonus = 3; // Cepat (<3s)
+                    else if(timeTaken < 5000) timeBonus = 1; // Normal (<5s)
+                    
+                    score += timeBonus;
+                }
+                // ===== END TIME BONUS LOGIC =====
+
+
             } else {
                 e.currentTarget.classList.add('wrong');
                 const right = buttons.find(b=> Number(b.dataset.val) === current.correct);
                 if(right) right.classList.add('correct');
+                playWrongSound();
+                
+                // ===== LOGIKA RESET STREAK & LOG KESALAHAN =====
+                currentStreak = 0;
+                streakDisplayEl.innerHTML = `Combo: x0`;
+
+                errorLog.push({
+                    question: `${current.a} × ${current.b}`,
+                    correct: current.correct,
+                    user: val
+                });
+                // ==============================================
             }
             scoreEl.textContent = score;
             correctCountEl.textContent = correctCount;
@@ -310,14 +414,33 @@
         }
 
         function startSession(){
+            // ===== LOGIKA GATE EKSKLUSIF (ZAHID ONLY) =====
+            if(localStorage.getItem('zahid_name_check') !== 'ZAHID_ACCESS_GRANTED'){
+                const name = prompt('Selamat datang! Untuk memulai game, masukkan nama pemain (Contoh: Zahid).').trim();
+                
+                if(!name || name.toUpperCase() !== 'ZAHID'){
+                    alert(`Akses ditolak. Game ini hanya untuk Zahid! Selamat datang kembali, Zahid.`);
+                    return;
+                }
+                
+                localStorage.setItem('zahid_name_check', 'ZAHID_ACCESS_GRANTED');
+                alert(`Akses Diterima! Selamat bermain, Zahid!`);
+            }
+            // ====================================================================
+
             score = 0; correctCount = 0; qIndex = 0;
+            currentStreak = 0; // RESET
+            errorLog = []; // RESET
+            
             scoreEl.textContent = score;
             correctCountEl.textContent = correctCount;
             qIndexEl.textContent = qIndex;
+            streakDisplayEl.innerHTML = `Combo: x0`; // Tampilan Awal Combo
             totalQuestions = Math.max(5, Number(countEl.value || 20));
 
             inSession = true;
             resultEl.classList.remove('show');
+            errorReviewEl.innerHTML = ''; // Clear review
 
             if(timer) { clearInterval(timer); timer = null; }
 
@@ -363,10 +486,12 @@
         function endSession(){
             inSession = false;
             if(timer) { clearInterval(timer); timer = null }
+            streakDisplayEl.innerHTML = `—`;
             
             const currentLevel = levelEl.value;
             let unlockMessage = '';
 
+            // Cek Level Gate
             if(currentLevel === 'easy' && score >= MIN_SCORE_MEDIUM && !playerProgress.unlockedMedium){
                 playerProgress.unlockedMedium = true;
                 saveProgress();
@@ -377,6 +502,7 @@
                 unlockMessage = `<br>🚀 **Level Sulit telah terbuka!** Luar biasa!`;
             }
             
+            // Update Leaderboard
             let board = JSON.parse(localStorage.getItem('zahid_board') || '[]');
             board.push({score, correct: correctCount, total: qIndex, level: currentLevel, time: Date.now()});
             board.sort((a,b)=> b.score - a.score);
@@ -393,6 +519,17 @@
                 tbody.appendChild(tr);
             });
 
+            // Tampilkan Review Kesalahan
+            if (errorLog.length > 0) {
+                errorReviewEl.innerHTML = errorLog.map(err => 
+                    `<li>❌ **${err.question}** (Jawaban Benar: ${err.correct}, Kamu Jawab: ${err.user})</li>`
+                ).join('');
+            } else {
+                errorReviewEl.innerHTML = `<li>Semua jawaban benar! Kerja bagus! 👍</li>`;
+                document.querySelector('#result h3[style*="#ef4444"]').style.display = 'none'; // Sembunyikan judul review jika 100% benar
+            }
+
+
             resultTitle.textContent = 'Permainan Selesai';
             resultText.innerHTML = `Skor akhir: <strong>${score}</strong><br>Jawaban benar: <strong>${correctCount}</strong> dari <strong>${qIndex}</strong> soal. ${unlockMessage}`;
             resultEl.classList.add('show');
@@ -401,17 +538,7 @@
             applyLevelGate();
         }
 
-        startBtn.addEventListener('click', ()=>{
-            if(!inSession && localStorage.getItem('zahid_name_check') !== 'ok'){
-                const name = prompt('Hai, Zahid! Ketik "OK" untuk mulai bermain.').toUpperCase();
-                if(name !== 'OK'){
-                    alert('Tidak bisa memulai. Harap ketik "OK" di kotak konfirmasi.');
-                    return;
-                }
-                localStorage.setItem('zahid_name_check', 'ok');
-            }
-            startSession();
-        });
+        startBtn.addEventListener('click', startSession);
 
         resetBtn.addEventListener('click', ()=>{
             if(!confirm('Anda yakin ingin me-reset semua progres, leaderboard, dan kunci level?')) return;
@@ -430,7 +557,10 @@
             applyLevelGate();
             document.querySelector('#leaderboard tbody').innerHTML = '';
             
-            alert('Semua progres telah di-reset!');
+            // Hapus kunci akses agar Gate Eksklusif Zahid muncul lagi setelah reset
+            localStorage.removeItem('zahid_name_check');
+            
+            alert('Semua progres telah di-reset! Akses hanya untuk Zahid!');
         });
 
         playAgain.addEventListener('click', startSession);
@@ -439,6 +569,8 @@
             if(!inSession) return;
             score = Math.max(0, score - 2);
             scoreEl.textContent = score;
+            currentStreak = 0; // Skip me-reset streak
+            streakDisplayEl.innerHTML = `Combo: x0`; 
             proceedNext();
         });
 
