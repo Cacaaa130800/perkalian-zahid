@@ -1,482 +1,474 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Game Zahid</title>
-  <style>
-    /* SKEMA WARNA GAYA GAME QUIZ (HIGH CONTRAST) */
-    :root{
-      --bg: #f3f4f6; /* Abu-abu Sangat Terang */
-      --card: #ffffff;
-      --accent: #4c46e4; /* Ungu Cerah Kahoot */
-      --accent-dark: #3733a1;
-      --good: #10b981; /* Hijau Sukses */
-      --bad: #ef4444; /* Merah Gagal */
-      --shadow-color: rgba(76, 70, 228, 0.2); 
-    }
-    
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial, sans-serif;background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-    .wrap{width:100%;max-width:850px} /* Lebar lebih besar */
-    
-    /* Card dengan bayangan yang lembut dan besar */
-    .card{background:var(--card);border-radius:20px;box-shadow:0 12px 25px rgba(0,0,0,0.1);padding:30px} 
-    h1{margin:0 0 8px;font-size:32px; color:var(--accent);}
-    p.lead{margin:0 0 25px;color:#6b7280; font-size: 1.1em;}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Game Perkalian Zahid</title>
+    <style>
+        /* SKEMA WARNA GAYA GAME QUIZ (HIGH CONTRAST) */
+        :root{
+            --bg: #f3f4f6; /* Abu-abu Sangat Terang */
+            --card: #ffffff;
+            --accent: #4c46e4; /* Ungu Cerah */
+            --accent-dark: #3733a1;
+            --good: #10b981; /* Hijau Sukses */
+            --bad: #ef4444; /* Merah Gagal */
+            --shadow-color: rgba(76, 70, 228, 0.2); 
+        }
+        
+        *{box-sizing:border-box}
+        body{margin:0;font-family:Arial, sans-serif;background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        .wrap{width:100%;max-width:850px} 
+        
+        .card{background:var(--card);border-radius:20px;box-shadow:0 12px 25px rgba(0,0,0,0.1);padding:30px} 
+        h1{margin:0 0 8px;font-size:32px;color:var(--accent);}
+        p.lead{margin:0 0 25px;color:#6b7280;font-size:1.1em;}
 
-    .controls{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;align-items:center;}
-    
-    .controls label{
-      background: #eef2ff; /* Sangat Pucat */
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid #c7d2fe;
-      font-size: 15px;
-      font-weight: 600;
-    }
-    
-    select,input[type=number]{padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1; margin-left: 8px; font-size: 15px;}
-    
-    /* Gaya Tombol Utama */
-    button#startBtn{
-      background:var(--accent);color:#fff;padding:16px 30px;border:none;border-radius:12px;cursor:pointer;
-      font-weight: 800;
-      font-size: 1.1em;
-      transition: all .2s ease;
-      box-shadow: 0 4px 0 var(--accent-dark); 
-      transform: translateY(0);
-    }
-    button#startBtn:active{
-      box-shadow: 0 0px 0 var(--accent-dark);
-      transform: translateY(4px); 
-    }
-    
-    button{ 
-      padding: 10px 18px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600;
-      background: #d1d5db; color: #1f2937;
-      transition: background .1s;
-    }
-    button:hover:not(#startBtn):not(#resetBtn){ background: #9ca3af; color: #fff; }
-    
-    .game-area{display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:start}
-    @media (max-width:850px){.game-area{grid-template-columns:1fr}}
+        .controls{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;align-items:center;}
+        
+        .controls label{
+            background:#eef2ff;
+            padding:10px 14px;
+            border-radius:12px;
+            border:1px solid #c7d2fe;
+            font-size:15px;
+            font-weight:600;
+        }
+        
+        select,input[type=number]{padding:8px 10px;border-radius:8px;border:1px solid #cbd5e1;margin-left:8px;font-size:15px;}
+        select#level:disabled{background:#f1f5f9;color:#94a3b8;cursor:not-allowed;}
+        
+        /* Tombol Utama dengan efek 3D */
+        button#startBtn{
+            background:var(--accent);color:#fff;padding:16px 30px;border:none;border-radius:12px;cursor:pointer;
+            font-weight:800;
+            font-size:1.1em;
+            transition:all .2s ease;
+            box-shadow:0 4px 0 var(--accent-dark); 
+            transform:translateY(0);
+        }
+        button#startBtn:active{
+            box-shadow:0 0px 0 var(--accent-dark);
+            transform:translateY(4px); 
+        }
+        
+        button{ 
+            padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-weight:600;
+            background:#d1d5db;color:#1f2937;
+            transition:background .1s;
+        }
+        button:hover:not(#startBtn):not(#resetBtn){background:#9ca3af;color:#fff;}
+        
+        .game-area{display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:start}
+        @media (max-width:850px){.game-area{grid-template-columns:1fr}}
 
-    /* KOTAK SOAL (Gaya Presentasi) */
-    .problem{background:#fef2f4; /* Merah Muda Pucat */ padding:40px; border-radius:24px; text-align:center; border: 4px solid #fca5a5; min-height: 250px; display: flex; flex-direction: column; justify-content: space-between;}
-    .question{font-size:72px;font-weight:900;margin:0; color:#b91c1c; /* Merah Tua */ line-height: 1.2;} 
-    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:25px; padding-top: 15px; border-top: 1px dashed #fca5a5;}
-    .meta .small{font-size:18px;color:#374151; font-weight: 700;}
+        /* KOTAK SOAL (Gaya Presentasi) */
+        .problem{background:#fef2f4;padding:40px;border-radius:24px;text-align:center;border:4px solid #fca5a5;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;}
+        .question{font-size:72px;font-weight:900;margin:0;color:#b91c1c;line-height:1.2;} 
+        .meta{display:flex;justify-content:space-between;align-items:center;margin-top:25px;padding-top:15px;border-top:1px dashed #fca5a5;}
+        .meta .small{font-size:18px;color:#374151;font-weight:700;}
 
-    /* GRID JAWABAN (Gaya Kahoot) */
-    .answers{display:grid;grid-template-columns:repeat(2,1fr);gap:25px;margin-top:30px}
-    
-    /* Pilihan Jawaban (Kotak Besar) */
-    .choice{
-      padding:25px;border-radius:16px;cursor:pointer;font-weight:900;
-      font-size: 28px;
-      color: #fff;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-      transition: transform .1s, opacity .1s;
-      text-align: center;
-      border: none;
-    }
-    
-    /* Tambahkan warna berbeda ke setiap tombol */
-    .answers button:nth-child(1){background:#3b82f6;} /* Biru */
-    .answers button:nth-child(2){background:#ef4444;} /* Merah */
-    .answers button:nth-child(3){background:#facc15;} /* Kuning */
-    .answers button:nth-child(4){background:#10b981;} /* Hijau */
-    
-    .choice:hover{ transform: scale(1.02); opacity: 0.9; }
-    .choice:active{ transform: scale(0.98); box-shadow: none; }
-    
-    /* Warna Feedback yang Jelas */
-    .choice.correct{ background: var(--good)!important; box-shadow:0 0 20px rgba(16,185,129,.5); }
-    .choice.wrong{ background: var(--bad)!important; opacity: 0.5; }
+        /* GRID JAWABAN (Gaya Kahoot) */
+        .answers{display:grid;grid-template-columns:repeat(2,1fr);gap:25px;margin-top:30px}
+        
+        /* Pilihan Jawaban (Kotak Besar) */
+        .choice{
+            padding:25px;border-radius:16px;cursor:pointer;font-weight:900;
+            font-size:28px;
+            color:#fff;
+            box-shadow:0 4px 0 rgba(0,0,0,0.1);
+            transition:transform .1s, opacity .1s;
+            text-align:center;
+            border:none;
+        }
+        
+        /* Warna berbeda untuk setiap tombol jawaban */
+        .answers button:nth-child(1){background:#3b82f6;} /* Biru */
+        .answers button:nth-child(2){background:#ef4444;} /* Merah */
+        .answers button:nth-child(3){background:#facc15;} /* Kuning */
+        .answers button:nth-child(4){background:#10b981;} /* Hijau */
+        
+        .choice:hover{transform:scale(1.02);opacity:0.9;}
+        .choice:active{transform:scale(0.98);box-shadow:none;}
+        
+        /* Warna Feedback yang Jelas */
+        .choice.correct{background:var(--good)!important;box-shadow:0 0 20px rgba(16,185,129,.5);}
+        .choice.wrong{background:var(--bad)!important;opacity:0.5;}
 
-    /* SIDEBAR (Skor & Timer) */
-    .sidebar{padding:30px;background:#fff;border-radius:20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;}
-    .score{font-size:48px;font-weight:900; color:var(--accent); margin-bottom: 5px;} 
-    .time{font-size:28px;color:#1f2937;margin-top:0; font-weight: 700;}
+        /* SIDEBAR (Skor & Timer) */
+        .sidebar{padding:30px;background:#fff;border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,0.05);border:1px solid #e5e7eb;}
+        .score{font-size:48px;font-weight:900;color:var(--accent);margin-bottom:5px;} 
+        .time{font-size:28px;color:#1f2937;margin-top:0;font-weight:700;}
 
-    .result{display:none;padding:30px;text-align:center; background: #ecfdf5; border: 2px solid #a7f3d0; border-radius: 20px; margin-top: 30px;}
-    .result.show{display:block}
-    .result h2 { color: #065f46; font-size: 32px;}
-    .result p { font-size: 20px; line-height: 1.6; color: #1f2937; }
+        .result{display:none;padding:30px;text-align:center;background:#ecfdf5;border:2px solid #a7f3d0;border-radius:20px;margin-top:30px;}
+        .result.show{display:block}
+        .result h2 {color:#065f46;font-size:32px;}
+        .result p {font-size:20px;line-height:1.6;color:#1f2937;}
 
-    .footer{margin-top:25px;display:flex;flex-direction:column;gap:15px;}
-
-    #showTable, #skip { width: 100%; font-weight: 700; }
-    #showTable { background: #e5e7eb; color: #374151; }
-    #skip { background: #fee2e2; color: #991b1b; }
-    
-    /* CSS Gate Level Terkunci */
-    select#level:disabled{ background:#f1f5f9; color:#94a3b8; cursor:not-allowed; }
-  </style>
+        .footer{margin-top:25px;display:flex;flex-direction:column;gap:15px;}
+        #showTable, #skip {width:100%;font-weight:700;}
+        #showTable {background:#e5e7eb;color:#374151;}
+        #skip {background:#fee2e2;color:#991b1b;}
+    </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Game Perkalian Ceria — Untuk Zahid 🚀</h1>
-      <p class="lead">Siap bermain? Pilih mode, tingkat kesulitan, lalu tekan <strong>Mulai Game</strong>. Tunjukkan yang terbaik, Zahid! Level Sulit akan terbuka seperti gate di game!</p>
+    <div class="wrap">
+        <div class="card">
+            <h1>Game Perkalian Zahid 🚀</h1>
+            <p class="lead">Siap bermain? Pilih mode, tingkat kesulitan, lalu tekan <strong>Mulai Game</strong>. Tunjukkan yang terbaik, Zahid! Level Sulit akan terbuka seperti gate di game!</p>
 
-      <div class="controls">
-        <label>
-          Mode:
-          <select id="mode">
-            <option value="timed">Timed — 60 detik</option>
-            <option value="practice">Practice — 20 soal</option>
-          </select>
-        </label>
+            <div class="controls">
+                <label>
+                    Mode:
+                    <select id="mode">
+                        <option value="timed">Timed — 60 detik</option>
+                        <option value="practice">Practice — 20 soal</option>
+                    </select>
+                </label>
 
-        <label>
-          Kesulitan:
-          <select id="level">
-            <option value="easy">Mudah (1–5)</option>
-            <option value="medium">Sedang (1–10)</option>
-            <option value="hard">Sulit (1–12)</option>
-          </select>
-        </label>
+                <label>
+                    Kesulitan:
+                    <select id="level">
+                        <option value="easy">Mudah (1–5)</option>
+                        <option value="medium">Sedang (1–10)</option>
+                        <option value="hard">Sulit (1–12)</option>
+                    </select>
+                </label>
 
-        <label>
-          Jumlah soal (practice):
-          <input id="count" type="number" min="5" max="100" value="20" />
-        </label>
+                <label>
+                    Jumlah soal (practice):
+                    <input id="count" type="number" min="5" max="100" value="20" />
+                </label>
 
-        <button id="startBtn">Mulai Game</button>
-        <button id="resetBtn" style="background:#fecaca; color:#b91c1c;">Reset Progres</button>
-      </div>
+                <button id="startBtn">Mulai Game</button>
+                <button id="resetBtn" style="background:#fecaca;color:#b91c1c;">Reset Progres</button>
+            </div>
 
-      <div class="game-area">
-        <div>
-          <div class="problem" id="problemCard" aria-live="polite">
-            <div class="question" id="question">Tekan Mulai Game untuk memulai</div>
-            
-            <div class="answers" id="answers">
-                          </div>
+            <div class="game-area">
+                <div>
+                    <div class="problem" id="problemCard" aria-live="polite">
+                        <div class="question" id="question">Tekan Mulai Game untuk memulai</div>
+                        
+                        <div class="answers" id="answers">
+                            </div>
 
-            <div class="meta">
-              <div class="small">Jawaban benar: <span id="correctCount">0</span></div>
-              <div class="small">Soal ke: <span id="qIndex">0</span></div>
-            </div>
-          </div>
+                        <div class="meta">
+                            <div class="small">Jawaban benar: <span id="correctCount">0</span></div>
+                            <div class="small">Soal ke: <span id="qIndex">0</span></div>
+                        </div>
+                    </div>
 
-          <div class="result" id="result">
-            <h2 id="resultTitle">Hasil Permainan Selesai!</h2>
-            <p id="resultText"></p>
-            <div style="margin-top:20px">
-              <button id="playAgain" style="background:var(--accent); color:#fff; font-weight: 700;">Main Lagi</button>
-            </div>
+                    <div class="result" id="result">
+                        <h2 id="resultTitle">Hasil Permainan Selesai!</h2>
+                        <p id="resultText"></p>
+                        <div style="margin-top:20px">
+                            <button id="playAgain" style="background:var(--accent);color:#fff;font-weight:700;">Main Lagi</button>
+                        </div>
 
-            <h3 style="margin-top:30px; color:#10b981;">Leaderboard Terbaik</h3>
-            <table id="leaderboard" style="width:100%;border-collapse:collapse;margin-top:10px">
-              <thead>
-                <tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Peringkat (Level)</th><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Skor</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
+                        <h3 style="margin-top:30px;color:#10b981;">Leaderboard Terbaik</h3>
+                        <table id="leaderboard" style="width:100%;border-collapse:collapse;margin-top:10px">
+                            <thead>
+                                <tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Peringkat (Level)</th><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Skor</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
 
-        <aside class="sidebar">
-          <div class="score">Skor: <span id="score">0</span></div>
-          <div class="time" id="timer">—</div>
+                <aside class="sidebar">
+                    <div class="score">Skor: <span id="score">0</span></div>
+                    <div class="time" id="timer">—</div>
 
-          <div style="margin-top:20px">
-            <p style="font-size:14px;color:#64748b; font-weight: 600;">Petunjuk Cepat:</p>
-            <ul style="padding-left:20px;margin:10px 0 0;color:#334155; font-size: 15px;">
-              <li>Gunakan angka **1, 2, 3, 4** pada keyboard untuk memilih jawaban.</li>
-              <li>Cepat dan Akurat = Skor Tinggi!</li>
-            </ul>
-          </div>
+                    <div style="margin-top:20px">
+                        <p style="font-size:14px;color:#64748b;font-weight:600;">Petunjuk Cepat:</p>
+                        <ul style="padding-left:20px;margin:10px 0 0;color:#334155;font-size:15px;">
+                            <li>Gunakan angka **1, 2, 3, 4** pada keyboard untuk memilih jawaban.</li>
+                            <li>Cepat dan Akurat = Skor Tinggi!</li>
+                        </ul>
+                    </div>
 
-          <div class="footer">
-            <button id="showTable">Tampilkan Tabel Perkalian</button>
-            <button id="skip">Lewati Soal (-2 Poin)</button>
-          </div>
-        </aside>
-      </div>
-    </div>
-  </div>
+                    <div class="footer">
+                        <button id="showTable">Tampilkan Tabel Perkalian</button>
+                        <button id="skip">Lewati Soal (-2 Poin)</button>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    // Elemen & Logika JavaScript sama seperti sebelumnya untuk mempertahankan fitur Gate Progres dan Timer
-    const startBtn = document.getElementById('startBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const playAgain = document.getElementById('playAgain');
-    const showTable = document.getElementById('showTable');
-    const skip = document.getElementById('skip');
+    <script>
+        // Logika JavaScript sama dan sudah dijamin bersih
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const playAgain = document.getElementById('playAgain');
+        const showTable = document.getElementById('showTable');
+        const skip = document.getElementById('skip');
 
-    const modeEl = document.getElementById('mode');
-    const levelEl = document.getElementById('level');
-    const countEl = document.getElementById('count');
+        const modeEl = document.getElementById('mode');
+        const levelEl = document.getElementById('level');
+        const countEl = document.getElementById('count');
 
-    const questionEl = document.getElementById('question');
-    const answersEl = document.getElementById('answers');
-    const scoreEl = document.getElementById('score');
-    const timerEl = document.getElementById('timer');
-    const resultEl = document.getElementById('result');
-    const resultTitle = document.getElementById('resultTitle');
-    const resultText = document.getElementById('resultText');
+        const questionEl = document.getElementById('question');
+        const answersEl = document.getElementById('answers');
+        const scoreEl = document.getElementById('score');
+        const timerEl = document.getElementById('timer');
+        const resultEl = document.getElementById('result');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultText = document.getElementById('resultText');
 
-    const correctCountEl = document.getElementById('correctCount');
-    const qIndexEl = document.getElementById('qIndex');
+        const correctCountEl = document.getElementById('correctCount');
+        const qIndexEl = document.getElementById('qIndex');
 
-    let current = {};
-    let score = 0;
-    let correctCount = 0;
-    let qIndex = 0;
-    let totalQuestions = 20;
-    let timer = null;
-    let timeLeft = 0;
-    let inSession = false;
-    
-    // --- Variabel Gate Progres ---
-    const MIN_SCORE_MEDIUM = 150; 
-    const MIN_SCORE_HARD = 300;  
-    let playerProgress = {
-      unlockedMedium: false,
-      unlockedHard: false
-    };
-    // -------------------------
+        let current = {};
+        let score = 0;
+        let correctCount = 0;
+        let qIndex = 0;
+        let totalQuestions = 20;
+        let timer = null;
+        let timeLeft = 0;
+        let inSession = false;
+        
+        const MIN_SCORE_MEDIUM = 150; 
+        const MIN_SCORE_HARD = 300;  
+        let playerProgress = {
+            unlockedMedium: false,
+            unlockedHard: false
+        };
 
-    function getRangeForLevel(level){
-      if(level === 'easy') return 5;
-      if(level === 'medium') return 10;
-      return 12;
-    }
+        function getRangeForLevel(level){
+            if(level === 'easy') return 5;
+            if(level === 'medium') return 10;
+            return 12;
+        }
 
-    function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
+        function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
 
-    function makeProblem(){
-      const max = getRangeForLevel(levelEl.value);
-      const a = randInt(1,max);
-      const b = randInt(1,max);
-      const correct = a*b;
-      const choices = new Set([correct]);
-      while(choices.size < 4){
-        let perturb = correct + randInt(-Math.floor(max*1.5), Math.floor(max*1.5));
-        if(Math.abs(perturb - correct) < 2) perturb += randInt(-3, 3);
-        if(perturb <= 0) perturb = randInt(1, max*max);
-        choices.add(perturb);
-      }
-      const arr = Array.from(choices).sort(()=>Math.random()-0.5);
-      return {a,b,correct,choices:arr}
-    }
+        function makeProblem(){
+            const max = getRangeForLevel(levelEl.value);
+            const a = randInt(1,max);
+            const b = randInt(1,max);
+            const correct = a*b;
+            const choices = new Set([correct]);
+            while(choices.size < 4){
+                let perturb = correct + randInt(-Math.floor(max*1.5), Math.floor(max*1.5));
+                if(Math.abs(perturb - correct) < 2) perturb += randInt(-3, 3);
+                if(perturb <= 0) perturb = randInt(1, max*max);
+                choices.add(perturb);
+            }
+            const arr = Array.from(choices).sort(()=>Math.random()-0.5);
+            return {a,b,correct,choices:arr}
+        }
 
-    function renderProblem(){
-      current = makeProblem();
-      questionEl.textContent = `${current.a} × ${current.b} = ?`;
-      answersEl.innerHTML = '';
-      current.choices.forEach((ch, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'choice';
-        // Tampilkan nomor jawaban di dalam tombol
-        btn.innerHTML = `<span style="font-size: 0.5em; display: block; margin-bottom: 5px; opacity: 0.8;">${index + 1}</span>${ch}`;
-        btn.setAttribute('data-val', ch);
-        btn.addEventListener('click', onAnswer);
-        answersEl.appendChild(btn);
-      });
+        function renderProblem(){
+            current = makeProblem();
+            questionEl.textContent = `${current.a} × ${current.b} = ?`;
+            answersEl.innerHTML = '';
+            current.choices.forEach((ch, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice';
+                // Tampilkan nomor jawaban di dalam tombol
+                btn.innerHTML = `<span style="font-size: 0.5em; display: block; margin-bottom: 5px; opacity: 0.8;">${index + 1}</span>${ch}`;
+                btn.setAttribute('data-val', ch);
+                btn.addEventListener('click', onAnswer);
+                answersEl.appendChild(btn);
+            });
 
-      qIndexEl.textContent = qIndex;
-      correctCountEl.textContent = correctCount;
-    }
+            qIndexEl.textContent = qIndex;
+            correctCountEl.textContent = correctCount;
+        }
 
-    function onAnswer(e){
-      if(!inSession || e.currentTarget.disabled) return;
-      const val = Number(e.currentTarget.dataset.val);
-      const buttons = Array.from(document.querySelectorAll('.choice'));
+        function onAnswer(e){
+            if(!inSession || e.currentTarget.disabled) return;
+            const val = Number(e.currentTarget.dataset.val);
+            const buttons = Array.from(document.querySelectorAll('.choice'));
 
-      buttons.forEach(b=> b.disabled = true);
+            buttons.forEach(b=> b.disabled = true);
 
-      if(val === current.correct){
-        e.currentTarget.classList.add('correct');
-        score += 10;
-        correctCount += 1;
-      } else {
-        e.currentTarget.classList.add('wrong');
-        const right = buttons.find(b=> Number(b.dataset.val) === current.correct);
-        if(right) right.classList.add('correct');
-      }
-      scoreEl.textContent = score;
-      correctCountEl.textContent = correctCount;
-      
-      setTimeout(()=>{ proceedNext(); }, 900); // Jeda diperpanjang sedikit agar feedback lebih terasa
-    }
+            if(val === current.correct){
+                e.currentTarget.classList.add('correct');
+                score += 10;
+                correctCount += 1;
+            } else {
+                e.currentTarget.classList.add('wrong');
+                const right = buttons.find(b=> Number(b.dataset.val) === current.correct);
+                if(right) right.classList.add('correct');
+            }
+            scoreEl.textContent = score;
+            correctCountEl.textContent = correctCount;
+            
+            setTimeout(()=>{ proceedNext(); }, 900);
+        }
 
-    function proceedNext(){
-      if(modeEl.value === 'practice' && qIndex >= totalQuestions){
-        endSession();
-        return;
-      }
-      qIndex += 1;
-      qIndexEl.textContent = qIndex;
-      renderProblem();
-    }
+        function proceedNext(){
+            if(modeEl.value === 'practice' && qIndex >= totalQuestions){
+                endSession();
+                return;
+            }
+            qIndex += 1;
+            qIndexEl.textContent = qIndex;
+            renderProblem();
+        }
 
-    function startSession(){
-      score = 0; correctCount = 0; qIndex = 0;
-      scoreEl.textContent = score;
-      correctCountEl.textContent = correctCount;
-      qIndexEl.textContent = qIndex;
-      totalQuestions = Math.max(5, Number(countEl.value || 20));
+        function startSession(){
+            score = 0; correctCount = 0; qIndex = 0;
+            scoreEl.textContent = score;
+            correctCountEl.textContent = correctCount;
+            qIndexEl.textContent = qIndex;
+            totalQuestions = Math.max(5, Number(countEl.value || 20));
 
-      inSession = true;
-      resultEl.classList.remove('show');
+            inSession = true;
+            resultEl.classList.remove('show');
 
-      if(timer) { clearInterval(timer); timer = null; }
+            if(timer) { clearInterval(timer); timer = null; }
 
-      if(modeEl.value === 'timed'){
-        timeLeft = 60;
-        timerEl.textContent = `Waktu: ${timeLeft}s`;
-        timer = setInterval(()=>{
-          timeLeft -= 1;
-          timerEl.textContent = `Waktu: ${timeLeft}s`;
-          if(timeLeft <= 0){
-            clearInterval(timer);
-            endSession();
-          }
-        },1000);
-      } else {
-        timerEl.textContent = `Mode Practice`;
-      }
-      proceedNext();
-    }
-    
-    // FUNGSI GATE PROGRES
-    function saveProgress(){ localStorage.setItem('zahid_progress', JSON.stringify(playerProgress)); }
+            if(modeEl.value === 'timed'){
+                timeLeft = 60;
+                timerEl.textContent = `Waktu: ${timeLeft}s`;
+                timer = setInterval(()=>{
+                    timeLeft -= 1;
+                    timerEl.textContent = `Waktu: ${timeLeft}s`;
+                    if(timeLeft <= 0){
+                        clearInterval(timer);
+                        endSession();
+                    }
+                },1000);
+            } else {
+                timerEl.textContent = `Mode Practice`;
+            }
+            proceedNext();
+        }
+        
+        function saveProgress(){ localStorage.setItem('zahid_progress', JSON.stringify(playerProgress)); }
 
-    function loadProgress(){
-      const saved = localStorage.getItem('zahid_progress');
-      if(saved){ playerProgress = JSON.parse(saved); }
-      applyLevelGate();
-    }
-    
-    function applyLevelGate(){
-      const options = levelEl.options;
-      const isMediumLocked = !playerProgress.unlockedMedium;
-      const isHardLocked = !playerProgress.unlockedHard;
-      
-      options[1].disabled = isMediumLocked; 
-      options[1].textContent = isMediumLocked ? `Sedang (1–10) [Kunci: Skor ${MIN_SCORE_MEDIUM} di Mudah]` : `Sedang (1–10)`;
+        function loadProgress(){
+            const saved = localStorage.getItem('zahid_progress');
+            if(saved){ playerProgress = JSON.parse(saved); }
+            applyLevelGate();
+        }
+        
+        function applyLevelGate(){
+            const options = levelEl.options;
+            const isMediumLocked = !playerProgress.unlockedMedium;
+            const isHardLocked = !playerProgress.unlockedHard;
+            
+            options[1].disabled = isMediumLocked; 
+            options[1].textContent = isMediumLocked ? `Sedang (1–10) [Kunci: Skor ${MIN_SCORE_MEDIUM} di Mudah]` : `Sedang (1–10)`;
 
-      options[2].disabled = isHardLocked; 
-      options[2].textContent = isHardLocked ? `Sulit (1–12) [Kunci: Skor ${MIN_SCORE_HARD} di Sedang]` : `Sulit (1–12)`;
-      
-      if(levelEl.selectedOptions[0] && levelEl.selectedOptions[0].disabled){ levelEl.value = 'easy'; }
-    }
-    
-    function endSession(){
-      inSession = false;
-      if(timer) { clearInterval(timer); timer = null }
-      
-      const currentLevel = levelEl.value;
-      let unlockMessage = '';
+            options[2].disabled = isHardLocked; 
+            options[2].textContent = isHardLocked ? `Sulit (1–12) [Kunci: Skor ${MIN_SCORE_HARD} di Sedang]` : `Sulit (1–12)`;
+            
+            if(levelEl.selectedOptions[0] && levelEl.selectedOptions[0].disabled){ levelEl.value = 'easy'; }
+        }
+        
+        function endSession(){
+            inSession = false;
+            if(timer) { clearInterval(timer); timer = null }
+            
+            const currentLevel = levelEl.value;
+            let unlockMessage = '';
 
-      if(currentLevel === 'easy' && score >= MIN_SCORE_MEDIUM && !playerProgress.unlockedMedium){
-        playerProgress.unlockedMedium = true;
-        saveProgress();
-        unlockMessage = `<br>🎉 **Level Sedang telah terbuka!** Hebat!`;
-      } else if(currentLevel === 'medium' && score >= MIN_SCORE_HARD && !playerProgress.unlockedHard){
-        playerProgress.unlockedHard = true;
-        saveProgress();
-        unlockMessage = `<br>🚀 **Level Sulit telah terbuka!** Luar biasa!`;
-      }
-      
-      let board = JSON.parse(localStorage.getItem('zahid_board') || '[]');
-      board.push({score, correct: correctCount, total: qIndex, level: currentLevel, time: Date.now()});
-      board.sort((a,b)=> b.score - a.score);
-      board = board.slice(0,10); 
-      localStorage.setItem('zahid_board', JSON.stringify(board));
+            if(currentLevel === 'easy' && score >= MIN_SCORE_MEDIUM && !playerProgress.unlockedMedium){
+                playerProgress.unlockedMedium = true;
+                saveProgress();
+                unlockMessage = `<br>🎉 **Level Sedang telah terbuka!** Hebat!`;
+            } else if(currentLevel === 'medium' && score >= MIN_SCORE_HARD && !playerProgress.unlockedHard){
+                playerProgress.unlockedHard = true;
+                saveProgress();
+                unlockMessage = `<br>🚀 **Level Sulit telah terbuka!** Luar biasa!`;
+            }
+            
+            let board = JSON.parse(localStorage.getItem('zahid_board') || '[]');
+            board.push({score, correct: correctCount, total: qIndex, level: currentLevel, time: Date.now()});
+            board.sort((a,b)=> b.score - a.score);
+            board = board.slice(0,10); 
+            localStorage.setItem('zahid_board', JSON.stringify(board));
 
-      const tbody = document.querySelector('#leaderboard tbody');
-      tbody.innerHTML = '';
-      board.forEach((item,i)=>{
-        const tr = document.createElement('tr');
-        const levelMap = {easy: 'Mudah', medium: 'Sedang', hard: 'Sulit'};
-        tr.innerHTML = `<td style='padding:8px;border-bottom:1px solid #e2e8f0'>${i+1} (${levelMap[item.level] || '-'})</td>
-                        <td style='padding:8px;border-bottom:1px solid #e2e8f0'>${item.score}</td>`;
-        tbody.appendChild(tr);
-      });
+            const tbody = document.querySelector('#leaderboard tbody');
+            tbody.innerHTML = '';
+            board.forEach((item,i)=>{
+                const tr = document.createElement('tr');
+                const levelMap = {easy: 'Mudah', medium: 'Sedang', hard: 'Sulit'};
+                tr.innerHTML = `<td style='padding:8px;border-bottom:1px solid #e2e8f0'>${i+1} (${levelMap[item.level] || '-'})</td>
+                                <td style='padding:8px;border-bottom:1px solid #e2e8f0'>${item.score}</td>`;
+                tbody.appendChild(tr);
+            });
 
-      resultTitle.textContent = 'Permainan Selesai';
-      resultText.innerHTML = `Skor akhir: <strong>${score}</strong><br>Jawaban benar: <strong>${correctCount}</strong> dari <strong>${qIndex}</strong> soal. ${unlockMessage}`;
-      resultEl.classList.add('show');
-      timerEl.textContent = '—';
-      
-      applyLevelGate();
-    }
+            resultTitle.textContent = 'Permainan Selesai';
+            resultText.innerHTML = `Skor akhir: <strong>${score}</strong><br>Jawaban benar: <strong>${correctCount}</strong> dari <strong>${qIndex}</strong> soal. ${unlockMessage}`;
+            resultEl.classList.add('show');
+            timerEl.textContent = '—';
+            
+            applyLevelGate();
+        }
 
-    // Event Listener dan Fungsi Lain
-    startBtn.addEventListener('click', ()=>{
-      if(!inSession && localStorage.getItem('zahid_name_check') !== 'ok'){
-        const name = prompt('Hai, Zahid! Ketik "OK" untuk mulai bermain.').toUpperCase();
-        if(name !== 'OK'){
-          alert('Tidak bisa memulai. Harap ketik "OK" di kotak konfirmasi.');
-          return;
-        }
-        localStorage.setItem('zahid_name_check', 'ok');
-      }
-      startSession();
-    });
+        startBtn.addEventListener('click', ()=>{
+            if(!inSession && localStorage.getItem('zahid_name_check') !== 'ok'){
+                const name = prompt('Hai, Zahid! Ketik "OK" untuk mulai bermain.').toUpperCase();
+                if(name !== 'OK'){
+                    alert('Tidak bisa memulai. Harap ketik "OK" di kotak konfirmasi.');
+                    return;
+                }
+                localStorage.setItem('zahid_name_check', 'ok');
+            }
+            startSession();
+        });
 
-    resetBtn.addEventListener('click', ()=>{
-      if(!confirm('Anda yakin ingin me-reset semua progres, leaderboard, dan kunci level?')) return;
-      
-      if(timer) clearInterval(timer);
-      inSession = false;
-      score = 0; correctCount = 0; qIndex = 0;
-      scoreEl.textContent = '0';
-      timerEl.textContent = '—';
-      questionEl.textContent = 'Tekan Mulai Game untuk memulai';
-      answersEl.innerHTML = '';
-      resultEl.classList.remove('show');
-      
-      localStorage.clear();
-      playerProgress = { unlockedMedium: false, unlockedHard: false };
-      applyLevelGate();
-      document.querySelector('#leaderboard tbody').innerHTML = '';
-      
-      alert('Semua progres telah di-reset!');
-    });
+        resetBtn.addEventListener('click', ()=>{
+            if(!confirm('Anda yakin ingin me-reset semua progres, leaderboard, dan kunci level?')) return;
+            
+            if(timer) clearInterval(timer);
+            inSession = false;
+            score = 0; correctCount = 0; qIndex = 0;
+            scoreEl.textContent = '0';
+            timerEl.textContent = '—';
+            questionEl.textContent = 'Tekan Mulai Game untuk memulai';
+            answersEl.innerHTML = '';
+            resultEl.classList.remove('show');
+            
+            localStorage.clear();
+            playerProgress = { unlockedMedium: false, unlockedHard: false };
+            applyLevelGate();
+            document.querySelector('#leaderboard tbody').innerHTML = '';
+            
+            alert('Semua progres telah di-reset!');
+        });
 
-    playAgain.addEventListener('click', startSession);
+        playAgain.addEventListener('click', startSession);
 
-    skip.addEventListener('click', ()=>{
-      if(!inSession) return;
-      score = Math.max(0, score - 2);
-      scoreEl.textContent = score;
-      proceedNext();
-    });
+        skip.addEventListener('click', ()=>{
+            if(!inSession) return;
+            score = Math.max(0, score - 2);
+            scoreEl.textContent = score;
+            proceedNext();
+        });
 
-    showTable.addEventListener('click', ()=>{
-      const max = getRangeForLevel(levelEl.value);
-      let txt = `Tabel Perkalian (Sampai ${max}×${max}):\n\n`;
-      let header = ' X |';
-      for(let k=1;k<=max;k++) header += `${k}`.padStart(4);
-      txt += header + '\n';
-      txt += '---+' + '-'.repeat(max * 4) + '\n';
-      
-      for(let i=1;i<=max;i++){
-        let row = `${i}`.padStart(2) + ' |';
-        for(let j=1;j<=max;j++) row += `${i*j}`.padStart(4);
-        txt += row + '\n';
-      }
-      alert(txt);
-    });
+        showTable.addEventListener('click', ()=>{
+            const max = getRangeForLevel(levelEl.value);
+            let txt = `Tabel Perkalian (Sampai ${max}×${max}):\n\n`;
+            let header = ' X |';
+            for(let k=1;k<=max;k++) header += `${k}`.padStart(4);
+            txt += header + '\n';
+            txt += '---+' + '-'.repeat(max * 4) + '\n';
+            
+            for(let i=1;i<=max;i++){
+                let row = `${i}`.padStart(2) + ' |';
+                for(let j=1;j<=max;j++) row += `${i*j}`.padStart(4);
+                txt += row + '\n';
+            }
+            alert(txt);
+        });
 
-    window.addEventListener('keydown', (e)=>{
-      if(!inSession) return;
-      const keys = ['1','2','3','4'];
-      if(keys.includes(e.key)){
-        const idx = Number(e.key)-1;
-        const btn = answersEl.children[idx];
-        if(btn) btn.click();
-      }
-    });
-    
-    window.addEventListener('DOMContentLoaded', loadProgress);
-  </script>
+        window.addEventListener('keydown', (e)=>{
+            if(!inSession) return;
+            const keys = ['1','2','3','4'];
+            if(keys.includes(e.key)){
+                const idx = Number(e.key)-1;
+                const btn = answersEl.children[idx];
+                if(btn) btn.click();
+            }
+        });
+        
+        window.addEventListener('DOMContentLoaded', loadProgress);
+    </script>
 </body>
 </html>
