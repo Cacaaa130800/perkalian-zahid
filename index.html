@@ -3,25 +3,26 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Game Perkalian Zahid 🚀</title>
+    <title>Game Matematika Zahid 🚀</title>
     <style>
-        /* SKEMA WARNA GAYA GAME QUIZ (HIGH CONTRAST) */
+        /* SKEMA WARNA GAYA GAME QUIZ (HIGH CONTRAST) - DEFAULT CERIA */
         :root{
-            --bg: #f3f4f6;
+            --bg: #f3f4f6; /* Abu-abu Sangat Terang */
             --card: #ffffff;
-            --accent: #4c46e4;
+            --accent: #4c46e4; /* Ungu Cerah */
             --accent-dark: #3733a1;
-            --good: #10b981;
-            --bad: #ef4444;
-            --shadow-color: rgba(76, 70, 228, 0.2); 
+            --good: #10b981; /* Hijau Sukses */
+            --bad: #ef4444; /* Merah Gagal */
             --combo: #f59e0b; /* Orange for combo */
+            --text-color: #1f2937; /* Default text color */
         }
         
         *{box-sizing:border-box}
-        body{margin:0;font-family:Arial, sans-serif;background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+        /* Menggunakan var(--text-color) untuk kompatibilitas Dark Mode */
+        body{margin:0;font-family:Arial, sans-serif;background:var(--bg);color:var(--text-color);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;transition: background-color 0.3s;}
         .wrap{width:100%;max-width:850px} 
         
-        .card{background:var(--card);border-radius:20px;box-shadow:0 12px 25px rgba(0,0,0,0.1);padding:30px} 
+        .card{background:var(--card);border-radius:20px;box-shadow:0 12px 25px rgba(0,0,0,0.1);padding:30px;transition: background-color 0.3s;} 
         h1{margin:0 0 8px;font-size:32px;color:var(--accent);}
         p.lead{margin:0 0 25px;color:#6b7280;font-size:1.1em;}
 
@@ -92,19 +93,22 @@
         .choice.wrong{background:var(--bad)!important;opacity:0.5;}
 
         /* SIDEBAR (Skor & Timer) */
-        .sidebar{padding:30px;background:#fff;border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,0.05);border:1px solid #e5e7eb;}
+        .sidebar{padding:30px;background:#fff;border-radius:20px;box-shadow:0 4px 15px rgba(0,0,0,0.05);border:1px solid #e5e7eb; transition: background-color 0.3s;}
         .score{font-size:48px;font-weight:900;color:var(--accent);margin-bottom:5px;} 
-        .time{font-size:28px;color:#1f2937;margin-top:0;font-weight:700;}
+        .time{font-size:28px;color:var(--text-color);margin-top:0;font-weight:700;}
 
         .result{display:none;padding:30px;text-align:center;background:#ecfdf5;border:2px solid #a7f3d0;border-radius:20px;margin-top:30px;}
         .result.show{display:block}
         .result h2 {color:#065f46;font-size:32px;}
-        .result p {font-size:20px;line-height:1.6;color:#1f2937;}
+        .result p {font-size:20px;line-height:1.6;color:var(--text-color);}
 
         .footer{margin-top:25px;display:flex;flex-direction:column;gap:15px;}
         #showTable, #skip {width:100%;font-weight:700;}
         #showTable {background:#e5e7eb;color:#374151;}
         #skip {background:#fee2e2;color:#991b1b;}
+
+        /* QUEST Harian */
+        #questSection{margin-top:25px; padding: 15px; border-radius: 10px; background: #fffbe2; border: 1px dashed #fcd34d; transition: all 0.3s;}
 
         /* ===== OPTIMASI MOBILE UNTUK LAYAR SANGAT KECIL (HP) ===== */
         @media (max-width:500px){
@@ -137,24 +141,44 @@
 <body>
     <div class="wrap">
         <div class="card">
-            <h1>Game Perkalian Zahid 🚀</h1>
-            <p class="lead">Siap bermain? Pilih mode, tingkat kesulitan, lalu tekan <strong>Mulai Game</strong>. Tunjukkan yang terbaik, Zahid! Level Sulit akan terbuka seperti gate di game!</p>
+            <h1>Game Matematika Zahid 🚀</h1>
+            <p class="lead">Siap bermain? Pilih mode, operasi, tingkat kesulitan, lalu tekan <strong>Mulai Game</strong>.</p>
 
             <div class="controls">
                 <label>
                     Mode:
                     <select id="mode">
                         <option value="timed">Timed — 60 detik</option>
-                        <option value="practice">Practice — 20 soal</option>
+                        <option value="practice">Practice — Soal Saja</option>
                     </select>
                 </label>
 
                 <label>
+                    Operasi:
+                    <select id="operation">
+                        <option value="multiplication">Perkalian (×)</option>
+                        <option value="addition">Penjumlahan (+)</option>
+                        <option value="subtraction">Pengurangan (–)</option>
+                        <option value="division">Pembagian (÷)</option>
+                        <option value="mixed">Campuran (All)</option>
+                    </select>
+                </label>
+                
+                <label>
                     Kesulitan:
                     <select id="level">
-                        <option value="easy">Mudah (1–5)</option>
-                        <option value="medium">Sedang (1–10)</option>
-                        <option value="hard">Sulit (1–12)</option>
+                        <option value="easy">Mudah (Kecil)</option>
+                        <option value="medium">Sedang (Biasa)</option>
+                        <option value="hard">Sulit (Besar)</option>
+                    </select>
+                </label>
+
+                <label>
+                    Tema:
+                    <select id="themeSelector">
+                        <option value="ceria">Ceria (Default)</option>
+                        <option value="gelap">Gelap (Dark Mode)</option>
+                        <option value="hijau">Hijau Alam</option>
                     </select>
                 </label>
 
@@ -191,7 +215,7 @@
                         <h3 style="margin-top:30px;color:#10b981;">Leaderboard Terbaik</h3>
                         <table id="leaderboard" style="width:100%;border-collapse:collapse;margin-top:10px">
                             <thead>
-                                <tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Peringkat (Level)</th><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Skor</th></tr>
+                                <tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Peringkat (Level/Operasi)</th><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Skor</th></tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -207,6 +231,11 @@
                     <div class="time" id="timer">—</div>
                     
                     <div id="streakDisplay" style="margin-top:15px;font-size:20px;font-weight:700;color:var(--good);min-height:24px;"></div>
+                    <div id="questSection" style="margin-top:25px; padding: 15px; border-radius: 10px; background: #fffbe2; border: 1px dashed #fcd34d;">
+                        <h4 style="margin:0 0 10px; color:#b45309; font-size:16px;">🎯 Quest Harian</h4>
+                        <p id="currentQuestText" style="margin:0; font-size:14px; color:#44403c;">—</p>
+                        <div id="questStatus" style="margin-top:10px; font-weight:700; color:var(--bad);"></div>
+                    </div>
                     <div style="margin-top:20px">
                         <p style="font-size:14px;color:#64748b;font-weight:600;">Petunjuk Cepat:</p>
                         <ul style="padding-left:20px;margin:10px 0 0;color:#334155;font-size:15px;">
@@ -227,7 +256,7 @@
     <audio id="correctSound" src="correct.mp3" preload="auto"></audio>
     <audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
     <script>
-        // Logika JavaScript sama dan sudah bersih, kini termasuk semua fitur baru
+        // --- SELEKTOR ELEMEN ---
         const startBtn = document.getElementById('startBtn');
         const resetBtn = document.getElementById('resetBtn');
         const playAgain = document.getElementById('playAgain');
@@ -235,8 +264,10 @@
         const skip = document.getElementById('skip');
 
         const modeEl = document.getElementById('mode');
+        const operationEl = document.getElementById('operation'); // BARU
         const levelEl = document.getElementById('level');
         const countEl = document.getElementById('count');
+        const themeSelectorEl = document.getElementById('themeSelector'); // BARU
 
         const questionEl = document.getElementById('question');
         const answersEl = document.getElementById('answers');
@@ -247,6 +278,8 @@
         const resultText = document.getElementById('resultText');
         const streakDisplayEl = document.getElementById('streakDisplay');
         const errorReviewEl = document.getElementById('errorReview');
+        const questStatusEl = document.getElementById('questStatus'); // BARU
+        const currentQuestTextEl = document.getElementById('currentQuestText'); // BARU
 
         const correctCountEl = document.getElementById('correctCount');
         const qIndexEl = document.getElementById('qIndex');
@@ -255,6 +288,7 @@
         const correctSound = document.getElementById('correctSound');
         const wrongSound = document.getElementById('wrongSound');
 
+        // --- VARIABEL GLOBAL ---
         let current = {};
         let score = 0;
         let correctCount = 0;
@@ -264,10 +298,10 @@
         let timeLeft = 0;
         let inSession = false;
         
-        // VARIABEL UNTUK FITUR BARU
         let currentStreak = 0;
-        let timeQuestionDisplayed = 0; // Waktu soal ditampilkan (untuk Time Bonus)
-        let errorLog = []; // Log kesalahan
+        let timeQuestionDisplayed = 0; 
+        let errorLog = []; 
+        let currentQuest = null; // BARU
         
         const MIN_SCORE_MEDIUM = 150; 
         const MIN_SCORE_HARD = 300;  
@@ -276,20 +310,144 @@
             unlockedHard: false
         };
 
+        // --- FUNGSI THEME (BARU) ---
+        const THEMES = {
+            'ceria': {
+                '--bg': '#f3f4f6', '--card': '#ffffff', '--accent': '#4c46e4', 
+                '--accent-dark': '#3733a1', '--good': '#10b981', '--bad': '#ef4444', 
+                '--combo': '#f59e0b', '--text-color': '#1f2937'
+            },
+            'gelap': {
+                '--bg': '#1f2937', '--card': '#374151', '--accent': '#60a5fa', 
+                '--accent-dark': '#3b82f6', '--good': '#4ade80', '--bad': '#f87171', 
+                '--combo': '#fbbf24', '--text-color': '#f3f4f6'
+            },
+            'hijau': {
+                '--bg': '#ecfdf5', '--card': '#ffffff', '--accent': '#059669', 
+                '--accent-dark': '#047857', '--good': '#16a34a', '--bad': '#dc2626', 
+                '--combo': '#ca8a04', '--text-color': '#1f2937'
+            }
+        };
+
+        function applyTheme(themeName) {
+            const root = document.documentElement;
+            const selectedTheme = THEMES[themeName] || THEMES['ceria'];
+            
+            for (const [key, value] of Object.entries(selectedTheme)) {
+                root.style.setProperty(key, value);
+            }
+
+            // Penyesuaian khusus untuk Dark Mode agar elemen internal terlihat jelas
+            if (themeName === 'gelap') {
+                document.querySelector('.sidebar').style.background = selectedTheme['--card'];
+                document.querySelector('.sidebar').style.color = selectedTheme['--text-color'];
+                document.querySelector('.problem').style.background = '#4b5563'; // Latar Soal di Dark Mode
+                document.querySelector('.question').style.color = '#fcd34d'; // Warna soal di Dark Mode
+            } else {
+                document.querySelector('.sidebar').style.background = '#fff'; // Default
+                document.querySelector('.sidebar').style.color = 'initial';
+                document.querySelector('.problem').style.background = '#fef2f4'; // Default
+                document.querySelector('.question').style.color = '#b91c1c'; // Default
+            }
+
+            // Update Quest Box background
+            updateQuestDisplay(); 
+            
+            localStorage.setItem('zahid_theme', themeName);
+        }
+        themeSelectorEl.addEventListener('change', (e) => applyTheme(e.target.value));
+
         // --- FUNGSI AUDIO ---
         function playCorrectSound() {
-            if (correctSound) {
-                correctSound.currentTime = 0;
-                correctSound.play().catch(e => console.log('Audio error:', e));
-            }
+            if (correctSound) { correctSound.currentTime = 0; correctSound.play().catch(e => console.log('Audio error:', e)); }
         }
         function playWrongSound() {
-            if (wrongSound) {
-                wrongSound.currentTime = 0;
-                wrongSound.play().catch(e => console.log('Audio error:', e));
-            }
+            if (wrongSound) { wrongSound.currentTime = 0; wrongSound.play().catch(e => console.log('Audio error:', e)); }
         }
         // --- END FUNGSI AUDIO ---
+
+        // --- FUNGSI QUEST HARIAN (BARU) ---
+        const QUESTS = [
+            { id: 'acc100easy', desc: 'Selesaikan 10 soal Perkalian (×) level Mudah dengan akurasi 100%.', type: 'accuracy', level: 'easy', op: 'multiplication', targetCount: 10, targetAcc: 1, reward: 50 },
+            { id: 'score200timed', desc: 'Capai skor minimal 200 di mode Timed Campuran.', type: 'score', mode: 'timed', op: 'mixed', targetScore: 200, reward: 75 },
+            { id: 'combo5', desc: 'Capai COMBO beruntun 5x di satu sesi.', type: 'combo', targetStreak: 5, reward: 40 },
+            { id: 'sub5medium', desc: 'Selesaikan 5 soal Pengurangan (–) di level Sedang.', type: 'count', op: 'subtraction', level: 'medium', targetCount: 5, reward: 30 }
+        ];
+
+        function getTodayDate() { return new Date().toISOString().slice(0, 10); }
+
+        function generateNewQuest() {
+            const randomIndex = randInt(0, QUESTS.length - 1);
+            const newQuest = QUESTS[randomIndex];
+            const questData = { ...newQuest, issuedDate: getTodayDate(), completed: false };
+            localStorage.setItem('zahid_daily_quest', JSON.stringify(questData));
+            currentQuest = questData;
+            updateQuestDisplay();
+        }
+
+        function loadQuest() {
+            const savedQuest = localStorage.getItem('zahid_daily_quest');
+            if (savedQuest) {
+                const questData = JSON.parse(savedQuest);
+                if (questData.issuedDate !== getTodayDate()) {
+                    generateNewQuest(); 
+                } else {
+                    currentQuest = questData;
+                }
+            } else {
+                generateNewQuest();
+            }
+            updateQuestDisplay();
+        }
+
+        function updateQuestDisplay() {
+            if (!currentQuest) return;
+
+            currentQuestTextEl.textContent = currentQuest.desc;
+            const questSectionEl = document.getElementById('questSection');
+            const currentTheme = themeSelectorEl.value;
+
+            if (currentQuest.completed) {
+                questStatusEl.innerHTML = `✅ **Quest Selesai!** (+${currentQuest.reward} Bonus Poin)`;
+                questStatusEl.style.color = 'var(--good)';
+                questSectionEl.style.background = (currentTheme === 'gelap' ? '#22c55e33' : '#e7f7e9');
+                questSectionEl.style.borderColor = 'var(--good)';
+            } else {
+                questStatusEl.innerHTML = `⏳ Belum Selesai`;
+                questStatusEl.style.color = 'var(--bad)';
+                questSectionEl.style.background = (currentTheme === 'gelap' ? '#f59e0b33' : '#fffbe2');
+                questSectionEl.style.borderColor = 'var(--combo)';
+            }
+        }
+
+        function checkQuestCompletion(sessionData = {}) {
+            if (!currentQuest || currentQuest.completed) return;
+
+            let isCompleted = false;
+
+            if (currentQuest.type === 'accuracy' && sessionData.total >= currentQuest.targetCount) {
+                if (sessionData.accuracy === currentQuest.targetAcc && sessionData.level === currentQuest.level && sessionData.op === currentQuest.op) isCompleted = true;
+            } else if (currentQuest.type === 'score' && sessionData.score) {
+                if (sessionData.score >= currentQuest.targetScore && sessionData.mode === currentQuest.mode && sessionData.op === currentQuest.op) isCompleted = true;
+            } else if (currentQuest.type === 'count' && sessionData.total >= currentQuest.targetCount) {
+                if (sessionData.level === currentQuest.level && sessionData.op === currentQuest.op) isCompleted = true;
+            } else if (currentQuest.type === 'combo') {
+                if (currentStreak >= currentQuest.targetStreak) isCompleted = true;
+            }
+            
+            if (isCompleted) {
+                currentQuest.completed = true;
+                localStorage.setItem('zahid_daily_quest', JSON.stringify(currentQuest));
+                
+                let totalBonus = Number(localStorage.getItem('zahid_total_bonus') || 0);
+                totalBonus += currentQuest.reward;
+                localStorage.setItem('zahid_total_bonus', totalBonus);
+                
+                alert(`🎯 Quest Harian Selesai! Kamu mendapatkan +${currentQuest.reward} Poin Bonus! Total Bonus Lifetime: ${totalBonus} Poin.`);
+                updateQuestDisplay();
+            }
+        }
+        // --- END FUNGSI QUEST HARIAN ---
 
 
         function getRangeForLevel(level){
@@ -300,25 +458,68 @@
 
         function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
 
+        // --- FUNGSI MAKE PROBLEM (TERBARU DENGAN OPERASI) ---
         function makeProblem(){
             const max = getRangeForLevel(levelEl.value);
-            const a = randInt(1,max);
-            const b = randInt(1,max);
-            const correct = a*b;
-            const choices = new Set([correct]);
-            while(choices.size < 4){
-                let perturb = correct + randInt(-Math.floor(max*1.5), Math.floor(max*1.5));
-                if(Math.abs(perturb - correct) < 2) perturb += randInt(-3, 3);
-                if(perturb <= 0 || perturb === correct) perturb = randInt(1, max*max);
-                choices.add(perturb);
+            const op = operationEl.value;
+
+            let operator = '';
+            let a, b, correct;
+
+            let currentOp = op;
+            if (op === 'mixed') {
+                const ops = ['multiplication', 'addition', 'subtraction', 'division'];
+                currentOp = ops[randInt(0, 3)];
             }
+
+            if (currentOp === 'multiplication') {
+                operator = '×';
+                a = randInt(1, max);
+                b = randInt(1, max);
+                correct = a * b;
+            } else if (currentOp === 'addition') {
+                operator = '+';
+                a = randInt(1, max * 4);
+                b = randInt(1, max * 4);
+                correct = a + b;
+            } else if (currentOp === 'subtraction') {
+                operator = '–';
+                let num1 = randInt(1, max * 4);
+                let num2 = randInt(1, max * 4);
+                a = Math.max(num1, num2); 
+                b = Math.min(num1, num2);
+                correct = a - b;
+            } else if (currentOp === 'division') {
+                operator = '÷';
+                const divisor = randInt(1, max);
+                const quotient = randInt(1, max);
+                a = divisor * quotient; 
+                b = divisor;
+                correct = quotient;
+            }
+
+            const choices = new Set([correct]);
+            
+            // Logika pembuatan pilihan jawaban
+            while(choices.size < 4){
+                let perturbationRange = Math.max(3, Math.ceil(correct / 3)); 
+                let perturb = correct + randInt(-perturbationRange, perturbationRange);
+                
+                if (perturb < (currentOp === 'division' ? 1 : 0)) perturb = randInt(1, correct + perturbationRange);
+                
+                if(perturb !== correct) {
+                    choices.add(perturb);
+                }
+            }
+            
             const arr = Array.from(choices).sort(()=>Math.random()-0.5);
-            return {a,b,correct,choices:arr}
+            return {a, b, operator, correct, choices: arr, type: currentOp};
         }
+        // --- END FUNGSI MAKE PROBLEM ---
 
         function renderProblem(){
             current = makeProblem();
-            questionEl.textContent = `${current.a} × ${current.b} = ?`;
+            questionEl.textContent = `${current.a} ${current.operator} ${current.b} = ?`;
             answersEl.innerHTML = '';
             current.choices.forEach((ch, index) => {
                 const btn = document.createElement('button');
@@ -332,7 +533,6 @@
             qIndexEl.textContent = qIndex;
             correctCountEl.textContent = correctCount;
 
-            // SET WAKTU SOAL DITAMPILKAN (Untuk Time Bonus)
             timeQuestionDisplayed = Date.now();
         }
 
@@ -345,7 +545,7 @@
 
             if(val === current.correct){
                 e.currentTarget.classList.add('correct');
-                score += 10; // BASE SCORE
+                score += 10;
                 correctCount += 1;
                 playCorrectSound();
 
@@ -361,6 +561,8 @@
                     score += bonus;
                     streakDisplayEl.innerHTML = `🔥 Combo x${currentStreak} (+${bonus} pts)!`;
                     streakDisplayEl.style.color = 'var(--combo)';
+                    // Cek Quest Combo di setiap kenaikan streak
+                    if (currentQuest && currentQuest.type === 'combo') checkQuestCompletion();
                 } else {
                     streakDisplayEl.innerHTML = `Combo: x${currentStreak}`;
                     streakDisplayEl.style.color = 'var(--good)';
@@ -371,9 +573,9 @@
                 if(modeEl.value === 'timed'){
                     const timeTaken = Date.now() - timeQuestionDisplayed;
                     let timeBonus = 0;
-                    if(timeTaken < 1500) timeBonus = 5; // Sangat cepat (<1.5s)
-                    else if(timeTaken < 3000) timeBonus = 3; // Cepat (<3s)
-                    else if(timeTaken < 5000) timeBonus = 1; // Normal (<5s)
+                    if(timeTaken < 1500) timeBonus = 5; 
+                    else if(timeTaken < 3000) timeBonus = 3; 
+                    else if(timeTaken < 5000) timeBonus = 1; 
                     
                     score += timeBonus;
                 }
@@ -391,7 +593,7 @@
                 streakDisplayEl.innerHTML = `Combo: x0`;
 
                 errorLog.push({
-                    question: `${current.a} × ${current.b}`,
+                    question: `${current.a} ${current.operator} ${current.b}`,
                     correct: current.correct,
                     user: val
                 });
@@ -429,18 +631,18 @@
             // ====================================================================
 
             score = 0; correctCount = 0; qIndex = 0;
-            currentStreak = 0; // RESET
-            errorLog = []; // RESET
+            currentStreak = 0; 
+            errorLog = []; 
             
             scoreEl.textContent = score;
             correctCountEl.textContent = correctCount;
             qIndexEl.textContent = qIndex;
-            streakDisplayEl.innerHTML = `Combo: x0`; // Tampilan Awal Combo
+            streakDisplayEl.innerHTML = `Combo: x0`; 
             totalQuestions = Math.max(5, Number(countEl.value || 20));
 
             inSession = true;
             resultEl.classList.remove('show');
-            errorReviewEl.innerHTML = ''; // Clear review
+            errorReviewEl.innerHTML = '';
 
             if(timer) { clearInterval(timer); timer = null; }
 
@@ -467,6 +669,12 @@
             const saved = localStorage.getItem('zahid_progress');
             if(saved){ playerProgress = JSON.parse(saved); }
             applyLevelGate();
+            loadQuest();
+            
+            // Load Theme
+            const savedTheme = localStorage.getItem('zahid_theme') || 'ceria';
+            themeSelectorEl.value = savedTheme;
+            applyTheme(savedTheme);
         }
         
         function applyLevelGate(){
@@ -475,10 +683,10 @@
             const isHardLocked = !playerProgress.unlockedHard;
             
             options[1].disabled = isMediumLocked; 
-            options[1].textContent = isMediumLocked ? `Sedang (1–10) [Kunci: Skor ${MIN_SCORE_MEDIUM} di Mudah]` : `Sedang (1–10)`;
+            options[1].textContent = isMediumLocked ? `Sedang [Kunci: Skor ${MIN_SCORE_MEDIUM} di Mudah]` : `Sedang (Biasa)`;
 
             options[2].disabled = isHardLocked; 
-            options[2].textContent = isHardLocked ? `Sulit (1–12) [Kunci: Skor ${MIN_SCORE_HARD} di Sedang]` : `Sulit (1–12)`;
+            options[2].textContent = isHardLocked ? `Sulit [Kunci: Skor ${MIN_SCORE_HARD} di Sedang]` : `Sulit (Besar)`;
             
             if(levelEl.selectedOptions[0] && levelEl.selectedOptions[0].disabled){ levelEl.value = 'easy'; }
         }
@@ -502,9 +710,23 @@
                 unlockMessage = `<br>🚀 **Level Sulit telah terbuka!** Luar biasa!`;
             }
             
+            // Siapkan data untuk Quest Harian
+            const accuracy = qIndex > 0 ? correctCount / qIndex : 0;
+            const sessionData = {
+                score: score,
+                total: qIndex,
+                accuracy: accuracy,
+                level: levelEl.value,
+                op: operationEl.value,
+                mode: modeEl.value
+            };
+            
+            // CHECK QUEST COMPLETION
+            checkQuestCompletion(sessionData);
+
             // Update Leaderboard
             let board = JSON.parse(localStorage.getItem('zahid_board') || '[]');
-            board.push({score, correct: correctCount, total: qIndex, level: currentLevel, time: Date.now()});
+            board.push({score, correct: correctCount, total: qIndex, level: currentLevel, op: operationEl.value, time: Date.now()});
             board.sort((a,b)=> b.score - a.score);
             board = board.slice(0,10); 
             localStorage.setItem('zahid_board', JSON.stringify(board));
@@ -513,25 +735,29 @@
             tbody.innerHTML = '';
             board.forEach((item,i)=>{
                 const tr = document.createElement('tr');
-                const levelMap = {easy: 'Mudah', medium: 'Sedang', hard: 'Sulit'};
-                tr.innerHTML = `<td style='padding:8px;border-bottom:1px solid #e2e8f0'>${i+1} (${levelMap[item.level] || '-'})</td>
+                const levelMap = {easy: 'M', medium: 'S', hard: 'L'};
+                const opMap = {multiplication:'×', addition:'+', subtraction:'–', division:'÷', mixed:'All'};
+                tr.innerHTML = `<td style='padding:8px;border-bottom:1px solid #e2e8f0'>${i+1} (${levelMap[item.level]}/${opMap[item.op] || '-'})</td>
                                 <td style='padding:8px;border-bottom:1px solid #e2e8f0'>${item.score}</td>`;
                 tbody.appendChild(tr);
             });
 
             // Tampilkan Review Kesalahan
+            document.querySelector('#result h3[style*="#ef4444"]').style.display = 'block';
             if (errorLog.length > 0) {
                 errorReviewEl.innerHTML = errorLog.map(err => 
-                    `<li>❌ **${err.question}** (Jawaban Benar: ${err.correct}, Kamu Jawab: ${err.user})</li>`
+                    `<li style='padding:4px 0;'>❌ **${err.question}** (Jawaban Benar: ${err.correct}, Kamu Jawab: ${err.user})</li>`
                 ).join('');
             } else {
-                errorReviewEl.innerHTML = `<li>Semua jawaban benar! Kerja bagus! 👍</li>`;
-                document.querySelector('#result h3[style*="#ef4444"]').style.display = 'none'; // Sembunyikan judul review jika 100% benar
+                errorReviewEl.innerHTML = `<li style='color: var(--good);'>Semua jawaban benar! Kerja bagus! 👍</li>`;
+                document.querySelector('#result h3[style*="#ef4444"]').style.display = 'none';
             }
-
+            
+            // Tambahkan Total Bonus Lifetime
+            const totalBonus = Number(localStorage.getItem('zahid_total_bonus') || 0);
 
             resultTitle.textContent = 'Permainan Selesai';
-            resultText.innerHTML = `Skor akhir: <strong>${score}</strong><br>Jawaban benar: <strong>${correctCount}</strong> dari <strong>${qIndex}</strong> soal. ${unlockMessage}`;
+            resultText.innerHTML = `Skor akhir: <strong>${score}</strong><br>Jawaban benar: <strong>${correctCount}</strong> dari <strong>${qIndex}</strong> soal. Total Bonus Quest Lifetime: <strong>${totalBonus}</strong> Poin. ${unlockMessage}`;
             resultEl.classList.add('show');
             timerEl.textContent = '—';
             
@@ -541,7 +767,7 @@
         startBtn.addEventListener('click', startSession);
 
         resetBtn.addEventListener('click', ()=>{
-            if(!confirm('Anda yakin ingin me-reset semua progres, leaderboard, dan kunci level?')) return;
+            if(!confirm('Anda yakin ingin me-reset semua progres, leaderboard, kunci level, dan Quest Harian?')) return;
             
             if(timer) clearInterval(timer);
             inSession = false;
@@ -557,8 +783,10 @@
             applyLevelGate();
             document.querySelector('#leaderboard tbody').innerHTML = '';
             
-            // Hapus kunci akses agar Gate Eksklusif Zahid muncul lagi setelah reset
+            // Hapus kunci akses dan Quest Harian
             localStorage.removeItem('zahid_name_check');
+            localStorage.removeItem('zahid_daily_quest');
+            loadQuest();
             
             alert('Semua progres telah di-reset! Akses hanya untuk Zahid!');
         });
@@ -569,12 +797,17 @@
             if(!inSession) return;
             score = Math.max(0, score - 2);
             scoreEl.textContent = score;
-            currentStreak = 0; // Skip me-reset streak
+            currentStreak = 0; 
             streakDisplayEl.innerHTML = `Combo: x0`; 
             proceedNext();
         });
 
         showTable.addEventListener('click', ()=>{
+            // Hanya tampilkan Tabel Perkalian jika operasi adalah perkalian
+            if(operationEl.value !== 'multiplication' && operationEl.value !== 'mixed') {
+                alert('Tabel hanya tersedia untuk mode Perkalian (×).');
+                return;
+            }
             const max = getRangeForLevel(levelEl.value);
             let txt = `Tabel Perkalian (Sampai ${max}×${max}):\n\n`;
             let header = ' X |';
