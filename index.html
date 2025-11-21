@@ -3,10 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Game Matematika Zahid 🚀</title>
+    <title>Game Matematik Zahid 🚀</title>
     <style>
         /* --- SKEMA WARNA DYNAMIC --- */
-        /* Default (Ceria) Theme */
         :root {
             --bg: #e0f2fe; 
             --card: #ffffff;
@@ -14,7 +13,9 @@
             --accent-dark: #0891b2; 
             --good: #4ade80; 
             --bad: #f87171; 
-            --text-color: #0f172a; /* Warna teks utama */
+            --combo: #fbbf24; 
+            --shop: #8b5cf6; /* Warna Ungu untuk Toko */
+            --text-color: #0f172a;
             --label-bg: #f0f9ff;
             --label-border: #bae6fd;
             --problem-bg: #fff1f2;
@@ -22,78 +23,104 @@
             --question-color: #dc2626;
         }
 
-        /* Dark Mode (Gelap) Theme */
         .theme-gelap {
-            --bg: #1f2937; /* Dark Grey Background */
-            --card: #374151; /* Card: Slightly Lighter Dark */
-            --accent: #60a5fa; /* Brighter Blue Accent */
+            --bg: #1f2937; 
+            --card: #374151; 
+            --accent: #60a5fa; 
             --accent-dark: #3b82f6;
             --good: #4ade80; 
             --bad: #f87171; 
-            --text-color: #f3f4f6; /* FIX: LIGHT TEXT for readability */
-            --label-bg: #374151; /* Darker label background */
-            --label-border: #4b5563; /* Darker label border */
+            --combo: #fbbf24;
+            --shop: #a78bfa; 
+            --text-color: #f3f4f6; 
+            --label-bg: #374151; 
+            --label-border: #4b5563; 
             --problem-bg: #4b5563;
             --problem-border: #93c5fd;
             --question-color: #fcd34d;
         }
-        /* --- END SKEMA WARNA DYNAMIC --- */
+
+        .theme-hijau {
+            --bg: #ecfdf5; --card: #ffffff; --accent: #059669; --accent-dark: #047857; 
+            --text-color: #1f2937; --label-bg: #d1fae5; --label-border: #6ee7b7;
+            --problem-bg: #f0fdf4; --problem-border: #a7f3d0; --question-color: #10b981;
+        }
         
         *{box-sizing:border-box}
-        /* FIX: Gunakan --text-color untuk warna teks di body */
-        body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px; color: var(--text-color); transition: background-color 0.3s, color 0.3s;}
+        body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial;background:var(--bg);color:var(--text-color);min-height:100vh;padding:20px; transition: background-color 0.3s, color 0.3s;}
         
+        /* GAYA GERBANG AKSES */
+        #accessGate {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--accent-dark); color: white;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            z-index: 1000; padding: 20px; text-align: center;
+        }
+        .gate-form h2 { font-size: 2.5em; margin-bottom: 5px; }
+        .gate-form p { font-size: 1.2em; opacity: 0.8; margin-bottom: 20px; }
+        .gate-form input {
+            padding: 15px; font-size: 1.2em; border-radius: 8px; margin-top: 10px; width: 100%; max-width: 300px; border: none; text-align: center; font-weight: bold;
+        }
+        .gate-form button { 
+            background: var(--good); color: white; border: none; cursor: pointer;
+            padding: 15px; font-size: 1.2em; border-radius: 8px; margin-top: 10px; 
+            width: 100%; max-width: 300px; font-weight: 700; transition: all 0.2s;
+        }
+        
+        .game-layout{display:none; align-items:center;justify-content:center; width: 100%; min-height: 100vh;}
         .wrap{width:100%;max-width:850px}
-        .card{background:var(--card);border-radius:18px;box-shadow:0 10px 40px rgba(2,6,23,0.1);padding:25px; transition: background-color 0.3s;} 
-        h1{margin:0 0 8px;font-size:24px; color:var(--text-color);} /* FIX: Inherit text color */
-        p.lead{margin:0 0 20px;color:var(--text-color)}
-
-        .controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px; align-items: center;}
         
-        /* FIX: Gunakan variabel untuk label */
+        .card{background:var(--card);border-radius:20px;box-shadow:0 12px 25px rgba(2,6,23,0.1);padding:30px; transition: background-color 0.3s;} 
+        h1{margin:0 0 8px;font-size:28px; color:var(--text-color);}
+        p.lead{margin:0 0 25px;color:var(--text-color);font-size:1.1em; opacity: 0.8;}
+
+        .controls{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:30px;align-items:center;}
+        
         .controls label{
             background: var(--label-bg);
-            padding: 8px 12px;
-            border-radius: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
             border: 1px solid var(--label-border);
-            font-size: 14px;
-            color: var(--text-color); /* FIX: Teks label harus ikut */
+            font-size: 15px;
+            color: var(--text-color);
             font-weight: 600;
         }
         
-        /* FIX: Gunakan variabel untuk input/select */
         select,input[type=number]{
             padding:8px 10px;border-radius:8px;
-            border:1px solid #e2e8f0; margin-left: 5px;
+            border:1px solid #cbd5e1; margin-left: 8px;
             background: var(--card); 
             color: var(--text-color);
+            font-size:15px;
         }
         
-        select#level:disabled{
-            background:#f1f5f9;
-            color:#94a3b8;
-            cursor:not-allowed;
-        }
+        select#level:disabled{background:#f1f5f9;color:#94a3b8;cursor:not-allowed;}
         
         button#startBtn{
-            background:var(--accent);color:#fff;padding:12px 18px;border:none;border-radius:12px;cursor:pointer;
-            font-weight: 700; transition: all .15s ease;
-            box-shadow: 0 4px 0 var(--accent-dark); 
-            transform: translateY(0);
+            background:var(--accent);color:#fff;padding:16px 30px;border:none;border-radius:12px;cursor:pointer;
+            font-weight:800;font-size:1.1em;transition:all .2s ease;
+            box-shadow:0 4px 0 var(--accent-dark); 
+            transform:translateY(0);
         }
         button#startBtn:active{
-            box-shadow: 0 0px 0 var(--accent-dark);
-            transform: translateY(4px);
+            box-shadow:0 0px 0 var(--accent-dark);
+            transform:translateY(4px); 
         }
         
-        /* Reset Button Style */
+        button{ 
+            padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-weight:600;
+            background:#d1d5db;color:#1f2937;
+            transition:background .1s;
+        }
+        
         #resetBtn {
              background: #f87171; 
              box-shadow: 0 4px 0 #b91c1c;
              color: #fff;
-             padding: 12px 18px;
+             padding: 16px 30px;
              border-radius: 12px;
-             font-weight: 700;
+             font-weight: 800;
              border: none;
              cursor: pointer;
         }
@@ -102,198 +129,283 @@
             transform: translateY(4px);
         }
 
+        .game-area{display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:start}
+        @media (max-width:850px){.game-area{grid-template-columns:1fr}}
 
-        .game-area{display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start}
-        @media (max-width:760px){.game-area{grid-template-columns:1fr}}
-
-        /* FIX: Gunakan variabel untuk problem card */
         .problem{
-            background:var(--problem-bg); 
-            padding:25px; border-radius:16px; 
-            text-align:center; 
-            border: 2px solid var(--problem-border);
+            background:var(--problem-bg);
+            padding:40px;border-radius:24px;text-align:center;
+            border:4px solid var(--problem-border);
+            min-height:250px;display:flex;flex-direction:column;justify-content:space-between;
             transition: background-color 0.3s, border-color 0.3s;
         }
-        /* FIX: Gunakan variabel untuk pertanyaan */
-        .question{font-size:48px;font-weight:900;margin:0; color:var(--question-color);} 
-        .meta{display:flex;justify-content:space-between;align-items:center;margin-top:15px; padding-top: 10px; border-top: 1px solid var(--problem-border);}
-        .meta .small{font-size:16px;color:var(--text-color); font-weight: 600;} /* FIX: Teks meta ikut */
+        .question{font-size:72px;font-weight:900;margin:0;color:var(--question-color);line-height:1.2; transition: color 0.3s;} 
+        .meta{display:flex;justify-content:space-between;align-items:center;margin-top:25px;padding-top:15px;border-top:1px dashed var(--problem-border);}
+        .meta .small{font-size:18px;color:var(--text-color);font-weight:700;}
 
-        .answers{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:25px}
+        .answers{display:grid;grid-template-columns:repeat(2,1fr);gap:25px;margin-top:30px}
         
         .choice{
-            padding:16px;border-radius:12px;
-            background:var(--card); /* FIX: background card */
-            border:1px solid #e2e8f0;cursor:pointer;font-weight:700;
-            font-size: 22px; color: var(--text-color); /* FIX: text color */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: all .15s ease;
+            padding:25px;border-radius:16px;cursor:pointer;font-weight:900;
+            font-size:28px; color:var(--text-color); background: var(--card);
+            box-shadow:0 4px 0 rgba(0,0,0,0.1); border: 2px solid #e5e7eb;
+            transition:transform .1s, opacity .1s, background .1s; text-align:center;
         }
-        
-        .choice.correct{border-color:var(--good);background: #f0fdf4; box-shadow:0 6px 18px rgba(16,185,129,.3); color: #059669;}
-        .choice.wrong{border-color:var(--bad);background: #fef2f2; box-shadow:0 6px 18px rgba(239,68,68,.2); color: #dc2626;}
+        .choice.correct{background:var(--good)!important;border-color:var(--good);box-shadow:0 0 20px rgba(16,185,129,.5);}
+        .choice.wrong{background:var(--bad)!important;border-color:var(--bad);opacity:0.8;}
 
-        /* FIX: Sidebar background dan text */
         .sidebar{
-            padding:20px;background:var(--card);border-radius:16px; 
-            box-shadow:0 4px 20px rgba(2,6,23,0.1); border: 1px solid #e2e8f0;
-            color: var(--text-color);
-            transition: background-color 0.3s, color 0.3s;
+            padding:30px;background:var(--card);border-radius:20px;
+            box-shadow:0 4px 15px rgba(0,0,0,0.05);border:1px solid #e5e7eb;
+            color: var(--text-color); transition: background-color 0.3s;
         }
-        .score{font-size:32px;font-weight:900; color:var(--accent-dark);} 
-        .time{font-size:22px;color:var(--text-color);margin-top:10px}
+        .score{font-size:48px;font-weight:900;color:var(--accent-dark);margin-bottom:5px;} 
+        .time{font-size:28px;color:var(--text-color);margin-top:0;font-weight:700;}
+        #streakDisplay { margin-top: 15px; font-size: 20px; font-weight: 700; min-height: 24px;}
+        #bonusPoints { font-size: 18px; color: var(--combo); font-weight: 800; margin-top: 10px;}
+        #skipTokenDisplay { font-size: 16px; color: var(--shop); font-weight: 700; margin-top: 5px;}
 
-        .result{display:none;padding:18px;text-align:center}
+        #questSection{margin-top:25px; padding: 15px; border-radius: 10px; background: #fffbe2; border: 1px dashed #fcd34d; transition: all 0.3s;}
+
+
+        .result{display:none;padding:30px;text-align:center;background:#ecfdf5;border:2px solid #a7f3d0;border-radius:20px;margin-top:30px; transition: background-color 0.3s;}
         .result.show{display:block}
-        .result h2 { color: var(--accent-dark); }
-
-        .small-muted{font-size:14px;color:var(--text-color)} /* FIX: text color */
-        .footer{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
-
-        .hint{font-size:14px;color:var(--text-color);margin-top:15px} /* FIX: text color */
         
-        /* Tombol di Footer */
-        #showTable, #skip {
-            box-shadow: none;
-            transform: none;
-            padding: 10px 14px;
-            font-weight: 600;
-            border-radius: 10px;
+        .footer{margin-top:25px;display:flex;flex-direction:column;gap:15px;}
+        #showTable, #skip, #openShopBtn {width:100%;font-weight:700;}
+        #showTable {background:#e5e7eb;color:#374151;}
+        #skip {background:#fee2e2;color:#991b1b;}
+        #openShopBtn {background: var(--shop); color: white;}
+        
+        /* GAYA TOKO POIN */
+        .modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.7);
+            justify-content: center; align-items: center;
         }
-        #showTable { background: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e6; }
-        #skip { background: #fde68a; color: #92400e; border: 1px solid #fcd34d; }
+        .modal-content {
+            background-color: var(--card); margin: auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); color: var(--text-color);
+        }
+        .close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close-btn:hover, .close-btn:focus { color: #000; text-decoration: none; cursor: pointer; }
+
+        .shop-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 15px;
+            border: 2px solid var(--accent); border-radius: 10px; background: var(--label-bg);
+        }
+        .item-info h4 { margin: 0 0 5px; color: var(--shop); font-size: 1.2em; }
+        .item-info p { margin: 0; font-size: 0.9em; opacity: 0.8; }
+        .item-buy button { 
+            background: var(--good); color: white; font-weight: 700; padding: 10px 15px; 
+            border: none; border-radius: 8px; cursor: pointer; transition: background-color 0.2s;
+        }
     </style>
 </head>
 <body>
-    <div class="wrap">
-        <div class="card">
-            <h1>Game Matematika Zahid 🚀</h1>
-            <p class="lead">Pilih mode, operasi, tingkat kesulitan, lalu tekan <strong>Mulai Game</strong>. <br>Level **Sedang** dan **Sulit** akan terbuka saat skor mencukupi!</p>
+    <div id="accessGate">
+        <div class="gate-form">
+            <h2>🔑 Gerbang Akses Khusus 🔑</h2>
+            <p>Masukkan kode rahasia untuk memulai petualangan matematika!</p>
+            <input type="text" id="secretCodeInput" placeholder="Kode Rahasia" maxlength="15" autocomplete="off" />
+            <button id="submitCodeBtn">Masuk</button>
+            <p id="gateMessage" style="color:var(--bad); margin-top: 15px; font-size: 1em;"></p>
+        </div>
+    </div>
+    <div class="game-layout" id="gameLayout">
+        <div class="wrap">
+            <div class="card">
+                <h1>Game Matematika Zahid 🚀</h1>
+                <p class="lead">Siap bermain? Pilih mode, operasi, tingkat kesulitan, lalu tekan <strong>Mulai Game</strong>.</p>
 
-            <div class="controls">
-                <label>
-                    Mode:
-                    <select id="mode">
-                        <option value="timed">Timed — 60 detik</option>
-                        <option value="practice">Practice — Soal Saja</option>
-                    </select>
-                </label>
-                
-                <label>
-                    Operasi:
-                    <select id="operation">
-                        <option value="multiplication">Perkalian (×)</option>
-                        <option value="addition">Penjumlahan (+)</option>
-                        <option value="subtraction">Pengurangan (–)</option>
-                        <option value="division">Pembagian (÷)</option>
-                        <option value="mixed">Campuran (All)</option>
-                    </select>
-                </label>
+                <div class="controls">
+                    <label>
+                        Mode:
+                        <select id="mode">
+                            <option value="timed">Timed — 60 detik</option>
+                            <option value="practice">Practice — Soal Saja</option>
+                        </select>
+                    </label>
 
-                <label>
-                    Kesulitan:
-                    <select id="level">
-                        <option value="easy">Mudah (Kecil)</option>
-                        <option value="medium">Sedang (Biasa)</option>
-                        <option value="hard">Sulit (Besar)</option>
-                    </select>
-                </label>
-                
-                <label>
-                    Tema:
-                    <select id="themeSelector">
-                        <option value="ceria">Ceria (Default)</option>
-                        <option value="gelap">Gelap (Dark Mode)</option>
-                    </select>
-                </label>
+                    <label>
+                        Operasi:
+                        <select id="operation">
+                            <option value="multiplication">Perkalian (×)</option>
+                            <option value="addition">Penjumlahan (+)</option>
+                            <option value="subtraction">Pengurangan (–)</option>
+                            <option value="division">Pembagian (÷)</option>
+                            <option value="mixed">Campuran (All)</option>
+                        </select>
+                    </label>
+                    
+                    <label>
+                        Kesulitan:
+                        <select id="level">
+                            <option value="easy">Mudah (Kecil)</option>
+                            <option value="medium">Sedang (Biasa)</option>
+                            <option value="hard">Sulit (Besar)</option>
+                        </select>
+                    </label>
 
-                <label>
-                    Jumlah soal (practice):
-                    <input id="count" type="number" min="5" max="100" value="20" />
-                </label>
+                    <label>
+                        Tema:
+                        <select id="themeSelector">
+                            <option value="ceria">Ceria (Default)</option>
+                            <option value="gelap">Gelap (Dark Mode)</option>
+                            <option value="hijau">Hijau Alam</option>
+                        </select>
+                    </label>
 
-                <button id="startBtn">Mulai Game</button>
-                <button id="resetBtn">Reset Progres</button>
-            </div>
+                    <label>
+                        Jumlah soal (practice):
+                        <input id="count" type="number" min="5" max="100" value="20" />
+                    </label>
 
-            <div class="game-area">
-                <div>
-                    <div class="problem" id="problemCard" aria-live="polite">
-                        <div class="question" id="question">Tekan Mulai Game untuk memulai</div>
-                        <div class="meta">
-                            <div class="small">Jawaban benar: <span id="correctCount">0</span></div>
-                            <div class="small">Soal ke: <span id="qIndex">0</span></div>
-                        </div>
-
-                        <div class="answers" id="answers"></div>
-
-                        <div class="hint">Gunakan tombol angka (1-4) atau klik jawaban.</div>
-                    </div>
-
-                    <div class="result" id="result">
-                        <h2 id="resultTitle">Hasil</h2>
-                        <p id="resultText"></p>
-                        <div style="margin-top:12px">
-                            <button id="playAgain" style="background:var(--accent); color:#fff; box-shadow: 0 4px 0 var(--accent-dark);">Main Lagi</button>
-                        </div>
-
-                        <h3 style="margin-top:25px; color:var(--text-color);">Leaderboard</h3>
-                        <table id="leaderboard" style="width:100%;border-collapse:collapse;margin-top:8px">
-                            <thead>
-                                <tr><th style="text-align:left;padding:6px;border-bottom:1px solid #cbd5e1; color:var(--text-color);">Peringkat (Level/Op)</th><th style="text-align:left;padding:6px;border-bottom:1px solid #cbd5e1; color:var(--text-color);">Skor</th></tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+                    <button id="startBtn">Mulai Game</button>
+                    <button id="resetBtn">Reset Progres</button>
                 </div>
 
-                <aside class="sidebar">
-                    <div class="score">Skor: <span id="score">0</span></div>
-                    <div class="time" id="timer">—</div>
+                <div class="game-area">
+                    <div>
+                        <div class="problem" id="problemCard" aria-live="polite">
+                            <div class="question" id="question">Tekan Mulai Game untuk memulai</div>
+                            
+                            <div class="answers" id="answers">
+                                </div>
 
-                    <div style="margin-top:12px">
-                        <div class="small-muted">Petunjuk singkat</div>
-                        <ul style="padding-left:18px;margin:8px 0 0;color:var(--text-color);">
-                            <li>Klik jawaban yang benar (atau tombol angka 1-4).</li>
-                            <li>Mode Timed: dapatkan nilai tertinggi dalam 60 detik.</li>
-                            <li>Mode Practice: selesaikan jumlah soal yang dipilih.</li>
-                        </ul>
+                            <div class="meta">
+                                <div class="small">Jawaban benar: <span id="correctCount">0</span></div>
+                                <div class="small">Soal ke: <span id="qIndex">0</span></div>
+                            </div>
+                        </div>
+
+                        <div class="result" id="result">
+                            <h2 id="resultTitle">Hasil Permainan Selesai!</h2>
+                            <p id="resultText"></p>
+                            <div style="margin-top:20px">
+                                <button id="playAgain" style="background:var(--accent);color:#fff;font-weight:700;">Main Lagi</button>
+                            </div>
+
+                            <h3 style="margin-top:30px;color:#10b981;">Leaderboard Terbaik</h3>
+                            <table id="leaderboard" style="width:100%;border-collapse:collapse;margin-top:10px">
+                                <thead>
+                                    <tr><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Peringkat (Level/Operasi)</th><th style="text-align:left;padding:8px;border-bottom:2px solid #e5e7eb">Skor</th></tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                            <h3 style="margin-top:30px;color:#ef4444;">Review Kesalahan (Pelajari!)</h3>
+                            <ul id="errorReview">
+                                </ul>
+                            </div>
                     </div>
 
-                    <div class="footer">
-                        <button id="showTable">Tabel Perkalian</button>
-                        <button id="skip">Lewati Soal (-2 Poin)</button>
-                    </div>
-                </aside>
+                    <aside class="sidebar">
+                        <div class="score">Skor: <span id="score">0</span></div>
+                        <div class="time" id="timer">—</div>
+                        
+                        <div id="streakDisplay"></div>
+                        <div id="bonusPoints">Total Bonus Poin: 0</div>
+                        <div id="skipTokenDisplay">Skip Token: 0</div>
+                        
+                        <div id="questSection">
+                            <h4 style="margin:0 0 10px; color:#b45309; font-size:16px;">🎯 Quest Harian</h4>
+                            <p id="currentQuestText" style="margin:0; font-size:14px; color:#44403c;">—</p>
+                            <div id="questStatus" style="margin-top:10px; font-weight:700; color:var(--bad);"></div>
+                        </div>
+
+                        <div style="margin-top:20px">
+                            <p style="font-size:14px;color:#64748b;font-weight:600;">Petunjuk Cepat:</p>
+                            <ul style="padding-left:20px;margin:10px 0 0;color:#334155;font-size:15px;">
+                                <li>Gunakan angka **1, 2, 3, 4** pada keyboard untuk memilih jawaban.</li>
+                                <li>**Streak** 3x benar = Bonus Skor!</li>
+                            </ul>
+                        </div>
+
+                        <div class="footer">
+                            <button id="openShopBtn">Toko Poin</button>
+                            <button id="showTable">Tampilkan Tabel Perkalian</button>
+                            <button id="skip">Lewati Soal (-2 Poin / Gunakan Token)</button>
+                        </div>
+                    </aside>
+                </div>
             </div>
         </div>
     </div>
+    <div id="shopModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeShopBtn">&times;</span>
+            <h2 style="color: var(--shop);">Toko Poin Zahid 🛍️</h2>
+            <p style="font-weight: 700;">Bonus Poin Anda: <span id="shopBonusPoints" style="color: var(--combo);">0</span></p>
+
+            <div id="shopItemsContainer" style="margin-top: 20px;">
+                <div class="shop-item">
+                    <div class="item-info">
+                        <h4>Skip Token (1x)</h4>
+                        <p>Dapat dilewati tanpa penalti skor. Token saat ini: <span id="shopSkipTokens">0</span></p>
+                    </div>
+                    <div class="item-buy">
+                        <button onclick="buyItem('token')">Beli (50 Poin)</button>
+                    </div>
+                </div>
+
+                <div class="shop-item">
+                    <div class="item-info">
+                        <h4>Bonus Waktu (Khusus Timed)</h4>
+                        <p>Tambahan 15 detik untuk sesi Timed berikutnya. Gunakan sebelum Mulai Game.</p>
+                    </div>
+                    <div class="item-buy">
+                        <button onclick="buyItem('time')">Beli (75 Poin)</button>
+                    </div>
+                </div>
+                
+            </div>
+            <p id="shopMessage" style="color: var(--bad); font-weight: 700; margin-top: 15px;"></p>
+        </div>
+    </div>
+    <audio id="correctSound" src="correct.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
 
     <script>
-        // Elemen
+        // --- SELEKTOR ELEMEN & KONSTANTA PENTING ---
         const startBtn = document.getElementById('startBtn');
         const resetBtn = document.getElementById('resetBtn');
         const playAgain = document.getElementById('playAgain');
         const showTable = document.getElementById('showTable');
         const skip = document.getElementById('skip');
+        const openShopBtn = document.getElementById('openShopBtn');
+        const shopModal = document.getElementById('shopModal');
+        const closeShopBtn = document.getElementById('closeShopBtn');
 
         const modeEl = document.getElementById('mode');
-        const operationEl = document.getElementById('operation'); // BARU
+        const operationEl = document.getElementById('operation');
         const levelEl = document.getElementById('level');
         const countEl = document.getElementById('count');
-        const themeSelectorEl = document.getElementById('themeSelector'); // BARU
+        const themeSelectorEl = document.getElementById('themeSelector');
 
+        // Gate Akses
+        const accessGateEl = document.getElementById('accessGate');
+        const gameLayoutEl = document.getElementById('gameLayout');
+        const secretCodeInput = document.getElementById('secretCodeInput');
+        const submitCodeBtn = document.getElementById('submitCodeBtn');
+        const gateMessageEl = document.getElementById('gateMessage');
+        const SECRET_CODE = "ZAHID JELEK"; 
+        const ACCESS_KEY = "ACCESS_GRANTED_BY_CODE"; 
+        
         const questionEl = document.getElementById('question');
         const answersEl = document.getElementById('answers');
         const scoreEl = document.getElementById('score');
         const timerEl = document.getElementById('timer');
         const resultEl = document.getElementById('result');
-        const resultTitle = document.getElementById('resultTitle');
-        const resultText = document.getElementById('resultText');
+        const streakDisplayEl = document.getElementById('streakDisplay');
+        const bonusPointsEl = document.getElementById('bonusPoints');
+        const skipTokenDisplayEl = document.getElementById('skipTokenDisplay');
+        const errorReviewEl = document.getElementById('errorReview');
+        
+        // Audio elements
+        const correctSound = document.getElementById('correctSound');
+        const wrongSound = document.getElementById('wrongSound');
 
-        const correctCountEl = document.getElementById('correctCount');
-        const qIndexEl = document.getElementById('qIndex');
-
+        // --- VARIABEL GLOBAL GAME ---
         let current = {};
         let score = 0;
         let correctCount = 0;
@@ -302,37 +414,216 @@
         let timer = null;
         let inSession = false;
         
-        // --- Variabel Gate Progres ---
+        let currentStreak = 0;
+        let maxStreak = 0; // Untuk cek Quest Combo
+        let errorLog = [];
+        let totalBonusPoints = 0;
+        let skipTokens = 0;
+        let bonusTimeActive = false;
+        let currentQuest = null; 
+        
         const MIN_SCORE_MEDIUM = 150; 
         const MIN_SCORE_HARD = 300;  
         let playerProgress = {
             unlockedMedium: false,
             unlockedHard: false
         };
-        // -------------------------
-        
-        // --- FUNGSI THEME (BARU) ---
+
+        // --- FUNGSI THEME & SOUND ---
+        const THEMES = {
+            // ... (Theme definitions are correct)
+            'ceria': {
+                '--bg': '#e0f2fe', '--card': '#ffffff', '--accent': '#22d3ee', '--accent-dark': '#0891b2', 
+                '--text-color': '#0f172a', '--label-bg': '#f0f9ff', '--label-border': '#bae6fd', 
+                '--problem-bg': '#fff1f2', '--problem-border': '#fda4af', '--question-color': '#dc2626'
+            },
+            'gelap': {
+                '--bg': '#1f2937', '--card': '#374151', '--accent': '#60a5fa', '--accent-dark': '#3b82f6', 
+                '--text-color': '#f3f4f6', '--label-bg': '#374151', '--label-border': '#4b5563', 
+                '--problem-bg': '#4b5563', '--problem-border': '#93c5fd', '--question-color': '#fcd34d'
+            },
+            'hijau': {
+                '--bg': '#ecfdf5', '--card': '#ffffff', '--accent': '#059669', '--accent-dark': '#047857', 
+                '--text-color': '#1f2937', '--label-bg': '#d1fae5', '--label-border': '#6ee7b7',
+                '--problem-bg': '#f0fdf4', '--problem-border': '#a7f3d0', '--question-color': '#10b981'
+            }
+        };
+
         function applyTheme(themeName) {
             const root = document.documentElement;
-            root.className = 'theme-' + themeName; // Apply class to root
+            const selectedTheme = THEMES[themeName] || THEMES['ceria'];
+            
+            for (const [key, value] of Object.entries(selectedTheme)) {
+                root.style.setProperty(key, value);
+            }
 
-            localStorage.setItem('zahid_theme', themeName); // Save preference
+            localStorage.setItem('zahid_theme', themeName);
+            updateQuestDisplay();
         }
         themeSelectorEl.addEventListener('change', (e) => applyTheme(e.target.value));
-        // --- END FUNGSI THEME ---
+        
+        function playCorrectSound() { if (correctSound) { correctSound.currentTime = 0; correctSound.play().catch(e => console.log('Audio error:', e)); } }
+        function playWrongSound() { if (wrongSound) { wrongSound.currentTime = 0; wrongSound.play().catch(e => console.log('Audio error:', e)); } }
+        // --- END FUNGSI THEME & SOUND ---
 
 
+        // --- FUNGSI TOKO POIN ---
+        function openShop(){
+            document.getElementById('shopBonusPoints').textContent = totalBonusPoints;
+            document.getElementById('shopSkipTokens').textContent = skipTokens;
+            document.getElementById('shopMessage').textContent = '';
+            shopModal.style.display = 'flex';
+        }
+
+        function closeShop(){
+            shopModal.style.display = 'none';
+        }
+
+        function buyItem(item) {
+            let cost = 0;
+            let successMessage = '';
+            const shopMessageEl = document.getElementById('shopMessage');
+            
+            if (item === 'token') {
+                cost = 50;
+                if (totalBonusPoints >= cost) {
+                    totalBonusPoints -= cost;
+                    skipTokens += 1;
+                    successMessage = `Berhasil membeli 1 Skip Token! Sisa Poin: ${totalBonusPoints}`;
+                    saveBonusPoints();
+                    saveSkipTokens();
+                } else {
+                    shopMessageEl.textContent = `Poin kurang! Perlu ${cost} Poin. Anda hanya punya ${totalBonusPoints}.`;
+                    return;
+                }
+            } else if (item === 'time') {
+                cost = 75;
+                if (totalBonusPoints >= cost) {
+                    if (bonusTimeActive) {
+                        shopMessageEl.textContent = 'Bonus Waktu sudah aktif. Gunakan dulu di mode Timed!';
+                        return;
+                    }
+                    totalBonusPoints -= cost;
+                    bonusTimeActive = true;
+                    successMessage = `Berhasil mengaktifkan Bonus Waktu (+15s)! Sisa Poin: ${totalBonusPoints}`;
+                    saveBonusPoints();
+                } else {
+                    shopMessageEl.textContent = `Poin kurang! Perlu ${cost} Poin. Anda hanya punya ${totalBonusPoints}.`;
+                    return;
+                }
+            }
+
+            shopMessageEl.textContent = successMessage;
+            document.getElementById('shopBonusPoints').textContent = totalBonusPoints;
+            document.getElementById('shopSkipTokens').textContent = skipTokens;
+            bonusPointsEl.textContent = `Total Bonus Poin: ${totalBonusPoints}`;
+            skipTokenDisplayEl.textContent = `Skip Token: ${skipTokens}`;
+        }
+
+        openShopBtn.addEventListener('click', openShop);
+        closeShopBtn.addEventListener('click', closeShop);
+        window.addEventListener('click', (e) => {
+            if (e.target === shopModal) closeShop();
+        });
+        // --- END FUNGSI TOKO POIN ---
+
+
+        // --- FUNGSI QUEST HARIAN ---
+        const QUESTS = [
+            { id: 'acc100easy', desc: 'Selesaikan 10 soal Perkalian (×) level Mudah dengan akurasi 100%.', type: 'accuracy', level: 'easy', op: 'multiplication', targetCount: 10, targetAcc: 1, reward: 50 },
+            { id: 'score200timed', desc: 'Capai skor minimal 200 di mode Timed Campuran.', type: 'score', mode: 'timed', op: 'mixed', targetScore: 200, reward: 75 },
+            { id: 'combo5', desc: 'Capai COMBO beruntun 5x di satu sesi.', type: 'combo', targetStreak: 5, reward: 40 },
+            { id: 'sub5medium', desc: 'Selesaikan 5 soal Pengurangan (–) di level Sedang.', type: 'count', op: 'subtraction', level: 'medium', targetCount: 5, reward: 30 }
+        ];
+
+        function getTodayDate() { return new Date().toISOString().slice(0, 10); }
+
+        function generateNewQuest() {
+            const randomIndex = randInt(0, QUESTS.length - 1);
+            const newQuest = QUESTS[randomIndex];
+            const questData = { ...newQuest, issuedDate: getTodayDate(), completed: false };
+            localStorage.setItem('zahid_daily_quest', JSON.stringify(questData));
+            currentQuest = questData;
+            updateQuestDisplay();
+        }
+
+        function loadQuest() {
+            const savedQuest = localStorage.getItem('zahid_daily_quest');
+            if (savedQuest) {
+                const questData = JSON.parse(savedQuest);
+                if (questData.issuedDate !== getTodayDate()) {
+                    generateNewQuest(); 
+                } else {
+                    currentQuest = questData;
+                }
+            } else {
+                generateNewQuest();
+            }
+            updateQuestDisplay();
+        }
+
+        function updateQuestDisplay() {
+            if (!currentQuest) return;
+            const questSectionEl = document.getElementById('questSection');
+            const questStatusEl = document.getElementById('questStatus');
+            const currentQuestTextEl = document.getElementById('currentQuestText');
+
+            currentQuestTextEl.textContent = currentQuest.desc;
+            
+            const isDarkMode = themeSelectorEl.value === 'gelap';
+
+            if (currentQuest.completed) {
+                questStatusEl.innerHTML = `✅ **Quest Selesai!** (+${currentQuest.reward} Bonus Poin)`;
+                questStatusEl.style.color = 'var(--good)';
+                questSectionEl.style.background = (isDarkMode ? '#22c55e33' : '#e7f7e9');
+                questSectionEl.style.borderColor = 'var(--good)';
+            } else {
+                questStatusEl.innerHTML = `⏳ Belum Selesai`;
+                questStatusEl.style.color = 'var(--bad)';
+                questSectionEl.style.background = (isDarkMode ? '#f59e0b33' : '#fffbe2');
+                questSectionEl.style.borderColor = 'var(--combo)';
+            }
+        }
+
+        function checkQuestCompletion(sessionData = {}) {
+            if (!currentQuest || currentQuest.completed) return;
+            let isCompleted = false;
+
+            if (currentQuest.type === 'accuracy' && sessionData.total >= currentQuest.targetCount) {
+                if (sessionData.accuracy === currentQuest.targetAcc && sessionData.level === currentQuest.level && sessionData.op === currentQuest.op) isCompleted = true;
+            } else if (currentQuest.type === 'score' && sessionData.score) {
+                if (sessionData.score >= currentQuest.targetScore && sessionData.mode === currentQuest.mode && sessionData.op === currentQuest.op) isCompleted = true;
+            } else if (currentQuest.type === 'count' && sessionData.total >= currentQuest.targetCount) {
+                if (sessionData.level === currentQuest.level && sessionData.op === currentQuest.op) isCompleted = true;
+            } else if (currentQuest.type === 'combo') {
+                if (sessionData.maxStreak >= currentQuest.targetStreak) isCompleted = true;
+            }
+            
+            if (isCompleted) {
+                currentQuest.completed = true;
+                localStorage.setItem('zahid_daily_quest', JSON.stringify(currentQuest));
+                
+                totalBonusPoints += currentQuest.reward;
+                saveBonusPoints();
+                
+                alert(`🎯 Quest Harian Selesai! Kamu mendapatkan +${currentQuest.reward} Bonus Poin! Total: ${totalBonusPoints}`);
+                updateQuestDisplay();
+            }
+        }
+        // --- END FUNGSI QUEST HARIAN ---
+
+        // --- FUNGSI UTILITY ---
         function getRangeForLevel(level){
-            if(level === 'easy') return 5;
-            if(level === 'medium') return 10;
-            return 12;
+            if(level === 'easy') return 10; 
+            if(level === 'medium') return 12;
+            return 15;
         }
 
         function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
 
         function makeProblem(){
             const max = getRangeForLevel(levelEl.value);
-            const op = operationEl.value; // Gunakan operasi yang dipilih
+            const op = operationEl.value;
 
             let operator = '';
             let a, b, correct;
@@ -340,31 +631,34 @@
             let currentOp = op;
             if (op === 'mixed') {
                 const ops = ['multiplication', 'addition', 'subtraction', 'division'];
-                currentOp = ops[randInt(0, 3)]; // Pilih acak dari 4 operasi
+                currentOp = ops[randInt(0, 3)];
             }
+            
+            let maxFactor = max;
+            let maxSum = max * 5;
 
             if (currentOp === 'multiplication') {
                 operator = '×';
-                a = randInt(1, max);
-                b = randInt(1, max);
+                a = randInt(1, maxFactor);
+                b = randInt(1, maxFactor);
                 correct = a * b;
             } else if (currentOp === 'addition') {
                 operator = '+';
-                a = randInt(1, max * 4);
-                b = randInt(1, max * 4);
+                a = randInt(1, maxSum);
+                b = randInt(1, maxSum);
                 correct = a + b;
             } else if (currentOp === 'subtraction') {
                 operator = '–';
-                let num1 = randInt(1, max * 4);
-                let num2 = randInt(1, max * 4);
+                let num1 = randInt(1, maxSum);
+                let num2 = randInt(1, maxSum);
                 a = Math.max(num1, num2); 
                 b = Math.min(num1, num2);
                 correct = a - b;
             } else if (currentOp === 'division') {
                 operator = '÷';
-                const divisor = randInt(1, max);
-                const quotient = randInt(1, max);
-                a = divisor * quotient; // Pastikan hasilnya bilangan bulat
+                const divisor = randInt(1, maxFactor);
+                const quotient = randInt(1, maxFactor);
+                a = divisor * quotient; 
                 b = divisor;
                 correct = quotient;
             }
@@ -375,8 +669,7 @@
                 let perturbationRange = Math.max(3, Math.ceil(correct / 3)); 
                 let perturb = correct + randInt(-perturbationRange, perturbationRange);
                 
-                // Jaga agar jawaban tidak negatif (kecuali mungkin untuk penambahan/perkalian besar)
-                if (perturb < 1 && currentOp !== 'addition' && currentOp !== 'multiplication') perturb = randInt(1, correct + perturbationRange);
+                if (perturb < (currentOp === 'division' ? 1 : 0)) perturb = randInt(1, correct + perturbationRange);
                 
                 if(perturb !== correct) {
                     choices.add(perturb);
@@ -384,29 +677,64 @@
             }
             
             const arr = Array.from(choices).sort(()=>Math.random()-0.5);
-            return {a, b, operator, correct, choices: arr}
+            return {a, b, operator, correct, choices: arr, type: currentOp};
+        }
+        // --- END FUNGSI UTILITY ---
+
+
+        // --- FUNGSI SIMPAN/MUAT PROGRES ---
+        function saveBonusPoints(){
+            localStorage.setItem('zahid_total_bonus', totalBonusPoints);
+            bonusPointsEl.textContent = `Total Bonus Poin: ${totalBonusPoints}`;
+        }
+        
+        function saveSkipTokens(){
+            localStorage.setItem('zahid_skip_tokens', skipTokens);
+            skipTokenDisplayEl.textContent = `Skip Token: ${skipTokens}`;
         }
 
-        function renderProblem(){
-            current = makeProblem();
-            questionEl.textContent = `${current.a} ${current.operator} ${current.b} = ?`;
-            answersEl.innerHTML = '';
-            current.choices.forEach((ch, index) => { // Tambahkan index untuk keyboard support visual
-                const btn = document.createElement('button');
-                btn.className = 'choice';
-                // Tambahkan angka 1-4 di atas jawaban
-                btn.innerHTML = `<span style="font-size: 0.5em; display: block; margin-bottom: 5px; opacity: 0.8;">${index + 1}</span>${ch}`; 
-                btn.setAttribute('data-val', ch);
-                btn.addEventListener('click', onAnswer);
-                answersEl.appendChild(btn);
-            });
-
-            qIndexEl.textContent = qIndex;
-            correctCountEl.textContent = correctCount;
+        function saveProgress(){ 
+            localStorage.setItem('zahid_progress', JSON.stringify(playerProgress)); 
         }
+
+        function loadProgress(){
+            const saved = localStorage.getItem('zahid_progress');
+            if(saved){ playerProgress = JSON.parse(saved); }
+            
+            totalBonusPoints = Number(localStorage.getItem('zahid_total_bonus') || 0);
+            skipTokens = Number(localStorage.getItem('zahid_skip_tokens') || 0);
+
+            saveBonusPoints();
+            saveSkipTokens();
+            
+            const savedTheme = localStorage.getItem('zahid_theme') || 'ceria';
+            themeSelectorEl.value = savedTheme;
+            applyTheme(savedTheme);
+            
+            applyLevelGate();
+            loadQuest();
+        }
+        
+        function applyLevelGate(){
+            const options = levelEl.options;
+            const isMediumLocked = !playerProgress.unlockedMedium;
+            const isHardLocked = !playerProgress.unlockedHard;
+            
+            options[1].disabled = isMediumLocked; 
+            options[1].textContent = isMediumLocked ? `Sedang [Kunci: Skor ${MIN_SCORE_MEDIUM} di Mudah]` : `Sedang (Biasa)`;
+
+            options[2].disabled = isHardLocked; 
+            options[2].textContent = isHardLocked ? `Sulit [Kunci: Skor ${MIN_SCORE_HARD} di Sedang]` : `Sulit (Besar)`;
+            
+            if(levelEl.selectedOptions[0] && levelEl.selectedOptions[0].disabled){ levelEl.value = 'easy'; }
+        }
+        // --- END FUNGSI SIMPAN/MUAT PROGRES ---
+
+
+        // --- FUNGSI GAME INTI ---
 
         function onAnswer(e){
-            if(!inSession) return;
+            if(!inSession || e.currentTarget.disabled) return;
             const val = Number(e.currentTarget.dataset.val);
             const buttons = Array.from(document.querySelectorAll('.choice'));
 
@@ -416,49 +744,100 @@
                 e.currentTarget.classList.add('correct');
                 score += 10;
                 correctCount += 1;
+                playCorrectSound(); // <<< DIPANGGIL KEMBALI
+
+                currentStreak += 1;
+                maxStreak = Math.max(maxStreak, currentStreak);
+                let bonus = 0;
+
+                if(currentStreak >= 3 && currentStreak % 3 === 0){
+                    if(currentStreak === 3) bonus = 5; 
+                    else if(currentStreak === 6) bonus = 10;
+                    else if(currentStreak >= 9) bonus = 15;
+                    
+                    score += bonus;
+                    streakDisplayEl.innerHTML = `🔥 Combo x${currentStreak} (+${bonus} pts)!`;
+                    streakDisplayEl.style.color = 'var(--combo)';
+                    if (currentQuest && currentQuest.type === 'combo') checkQuestCompletion({maxStreak});
+                } else {
+                    streakDisplayEl.innerHTML = `Combo: x${currentStreak}`;
+                    streakDisplayEl.style.color = 'var(--good)';
+                }
+
             } else {
                 e.currentTarget.classList.add('wrong');
                 const right = buttons.find(b=> Number(b.dataset.val) === current.correct);
                 if(right) right.classList.add('correct');
+                playWrongSound(); // <<< DIPANGGIL KEMBALI
+                
+                currentStreak = 0;
+                streakDisplayEl.innerHTML = `Combo: x0`;
+
+                errorLog.push({
+                    question: `${current.a} ${current.operator} ${current.b}`,
+                    correct: current.correct,
+                    user: val
+                });
             }
-
             scoreEl.textContent = score;
-            correctCountEl.textContent = correctCount;
-
-            setTimeout(()=>{
-                proceedNext();
-            }, 700);
+            document.getElementById('correctCount').textContent = correctCount;
+            
+            setTimeout(()=>{ proceedNext(); }, 900);
         }
 
         function proceedNext(){
-            if(modeEl.value === 'practice'){
-                if(qIndex >= totalQuestions){
-                    endSession();
-                    return;
-                }
+            if(modeEl.value === 'practice' && qIndex >= totalQuestions){
+                endSession();
+                return;
             }
-            
             qIndex += 1;
-            qIndexEl.textContent = qIndex;
+            document.getElementById('qIndex').textContent = qIndex;
             renderProblem();
         }
 
-        function startSession(){
-            // init
-            score = 0; correctCount = 0; qIndex = 0;
-            scoreEl.textContent = score;
-            correctCountEl.textContent = correctCount;
-            qIndexEl.textContent = qIndex;
+        function renderProblem(){
+            current = makeProblem();
+            questionEl.textContent = `${current.a} ${current.operator} ${current.b} = ?`;
+            answersEl.innerHTML = '';
+            current.choices.forEach((ch, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice';
+                btn.innerHTML = `<span style="font-size: 0.5em; display: block; margin-bottom: 5px; opacity: 0.8;">${index + 1}</span>${ch}`;
+                btn.setAttribute('data-val', ch);
+                btn.addEventListener('click', onAnswer);
+                answersEl.appendChild(btn);
+            });
 
+            document.getElementById('qIndex').textContent = qIndex;
+            document.getElementById('correctCount').textContent = correctCount;
+        }
+
+        function startSession(){
+            score = 0; correctCount = 0; qIndex = 0;
+            currentStreak = 0; maxStreak = 0;
+            errorLog = [];
+            
+            scoreEl.textContent = score;
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('qIndex').textContent = qIndex;
+            streakDisplayEl.innerHTML = `Combo: x0`;
+            
             totalQuestions = Math.max(5, Number(countEl.value || 20));
 
             inSession = true;
             resultEl.classList.remove('show');
+            errorReviewEl.innerHTML = '';
 
             if(timer) { clearInterval(timer); timer = null }
 
             if(modeEl.value === 'timed'){
-                let timeLeft = 60;
+                let initialTime = 60;
+                if (bonusTimeActive) {
+                    initialTime += 15;
+                    bonusTimeActive = false;
+                    alert('Bonus Waktu (+15s) telah digunakan!');
+                }
+                let timeLeft = initialTime;
                 timerEl.textContent = `Waktu: ${timeLeft}s`;
                 timer = setInterval(()=>{
                     timeLeft -= 1;
@@ -471,159 +850,134 @@
             } else {
                 timerEl.textContent = `Mode Practice`;
             }
-
             proceedNext();
         }
-        
-        
-        // --- FUNGSI GATE PROGRES & SAVE ---
-        function saveProgress(){
-            localStorage.setItem('zahid_progress', JSON.stringify(playerProgress));
-        }
-
-        function loadProgress(){
-            const saved = localStorage.getItem('zahid_progress');
-            if(saved){
-                playerProgress = JSON.parse(saved);
-            }
-            
-            // Muat Tema (BARU)
-            const savedTheme = localStorage.getItem('zahid_theme') || 'ceria';
-            themeSelectorEl.value = savedTheme;
-            applyTheme(savedTheme);
-
-            applyLevelGate();
-        }
-        
-        function applyLevelGate(){
-            const options = levelEl.options;
-            
-            options[1].disabled = !playerProgress.unlockedMedium; 
-            if(!playerProgress.unlockedMedium) {
-                options[1].textContent = `Sedang (Biasa) [Kunci - Skor: ${MIN_SCORE_MEDIUM} di Mudah]`;
-            } else {
-                options[1].textContent = `Sedang (Biasa)`;
-            }
-
-            options[2].disabled = !playerProgress.unlockedHard; 
-            if(!playerProgress.unlockedHard) {
-                options[2].textContent = `Sulit (Besar) [Kunci - Skor: ${MIN_SCORE_HARD} di Sedang]`;
-            } else {
-                options[2].textContent = `Sulit (Besar)`;
-            }
-            
-            if(levelEl.selectedOptions[0] && levelEl.selectedOptions[0].disabled){
-                levelEl.value = 'easy';
-            }
-        }
-        // ---------------------------
         
         function endSession(){
             inSession = false;
             if(timer) { clearInterval(timer); timer = null }
+            streakDisplayEl.innerHTML = `—`;
             
             const currentLevel = levelEl.value;
-            const currentOp = operationEl.value; // Operasi saat ini
             let unlockMessage = '';
 
-            // Logic Gate Level
             if(currentLevel === 'easy' && score >= MIN_SCORE_MEDIUM && !playerProgress.unlockedMedium){
                 playerProgress.unlockedMedium = true;
                 saveProgress();
-                unlockMessage = `<br>🎉 **Level Sedang telah terbuka!** Coba di pengaturan kesulitan.`;
-            }
-            
-            if(currentLevel === 'medium' && score >= MIN_SCORE_HARD && !playerProgress.unlockedHard){
+                unlockMessage = `<br>🎉 **Level Sedang telah terbuka!** Hebat!`;
+            } else if(currentLevel === 'medium' && score >= MIN_SCORE_HARD && !playerProgress.unlockedHard){
                 playerProgress.unlockedHard = true;
                 saveProgress();
-                unlockMessage = `<br>🚀 **Level Sulit telah terbuka!** Zahid hebat!`;
+                unlockMessage = `<br>🚀 **Level Sulit telah terbuka!** Luar biasa!`;
             }
+            
+            const accuracy = qIndex > 0 ? correctCount / qIndex : 0;
+            const sessionData = {
+                score: score, total: qIndex, accuracy: accuracy, level: levelEl.value, op: operationEl.value, mode: modeEl.value, maxStreak: maxStreak
+            };
+            
+            checkQuestCompletion(sessionData);
 
-            // simpan skor ke Leaderboard
             let board = JSON.parse(localStorage.getItem('zahid_board') || '[]');
-            board.push({score, correct: correctCount, total: qIndex, level: currentLevel, op: currentOp, time: Date.now()});
+            board.push({score, correct: correctCount, total: qIndex, level: currentLevel, op: operationEl.value, time: Date.now()});
             board.sort((a,b)=> b.score - a.score);
             board = board.slice(0,10); 
             localStorage.setItem('zahid_board', JSON.stringify(board));
 
-            // tampilkan leaderboard
             const tbody = document.querySelector('#leaderboard tbody');
             tbody.innerHTML = '';
             board.forEach((item,i)=>{
                 const tr = document.createElement('tr');
                 const levelMap = {easy: 'M', medium: 'S', hard: 'L'};
                 const opMap = {multiplication:'×', addition:'+', subtraction:'–', division:'÷', mixed:'All'};
-                tr.innerHTML = `<td style='padding:6px;border-bottom:1px solid #e2e8f0'>${i+1} (${levelMap[item.level] || '-'}, ${opMap[item.op] || '-'})</td>
-                                <td style='padding:6px;border-bottom:1px solid #e2e8f0'>${item.score}</td>`;
+                tr.innerHTML = `<td style='padding:8px;border-bottom:1px solid #e2e8f0'>${i+1} (${levelMap[item.level]}/${opMap[item.op] || '-'})</td>
+                                <td style='padding:8px;border-bottom:1px solid #e2e8f0'>${item.score}</td>`;
                 tbody.appendChild(tr);
             });
 
-            // tampilkan hasil
-            resultTitle.textContent = 'Permainan Selesai';
-            resultText.innerHTML = `Skor akhir: <strong>${score}</strong><br>Jawaban benar: <strong>${correctCount}</strong> dari <strong>${qIndex}</strong> soal. ${unlockMessage}`;
+            document.querySelector('#result h3[style*="#ef4444"]').style.display = 'block';
+            if (errorLog.length > 0) {
+                errorReviewEl.innerHTML = errorLog.map(err => 
+                    `<li style='padding:4px 0;'>❌ **${err.question}** (Jawaban Benar: ${err.correct}, Kamu Jawab: ${err.user})</li>`
+                ).join('');
+            } else {
+                errorReviewEl.innerHTML = `<li style='color: var(--good);'>Semua jawaban benar! Kerja bagus! 👍</li>`;
+                document.querySelector('#result h3[style*="#ef4444"]').style.display = 'none';
+            }
+            
+            const resultTextEl = document.getElementById('resultText');
+            resultTextEl.innerHTML = `Skor akhir: <strong>${score}</strong><br>Jawaban benar: <strong>${correctCount}</strong> dari <strong>${qIndex}</strong> soal. Total Bonus Poin: <strong>${totalBonusPoints}</strong>. ${unlockMessage}`;
             resultEl.classList.add('show');
             timerEl.textContent = '—';
             
-            applyLevelGate(); 
+            applyLevelGate();
         }
 
-        startBtn.addEventListener('click', ()=>{
-            // Gate Awal Sederhana
-            if(!inSession && localStorage.getItem('zahid_name_check') !== 'ok'){
-                const name = prompt('Hai, Zahid! Ketik "OK" untuk mulai bermain.').toUpperCase();
-                if(name !== 'OK'){
-                    alert('Tidak bisa memulai. Harap ketik "OK" di kotak konfirmasi.');
-                    return;
-                }
-                localStorage.setItem('zahid_name_check', 'ok');
-            }
-            startSession();
+        // --- EVENT LISTENERS ---
+        submitCodeBtn.addEventListener('click', () => checkCode(secretCodeInput.value));
+        secretCodeInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') checkCode(secretCodeInput.value);
         });
 
+        startBtn.addEventListener('click', startSession);
+        playAgain.addEventListener('click', startSession);
+
         resetBtn.addEventListener('click', ()=>{
-            if(!confirm('Anda yakin ingin me-reset SEMUA progres (Leaderboard, Kunci Level, dan Konfirmasi Awal)?')) return;
+            if(!confirm('Anda yakin ingin me-reset SEMUA progres (Bonus Poin, Leaderboard, Kunci Level, dan Akses Rahasia)?')) return;
             
             if(timer) clearInterval(timer);
             inSession = false;
             
-            localStorage.removeItem('zahid_progress');
-            localStorage.removeItem('zahid_board'); 
-            localStorage.removeItem('zahid_name_check');
-            localStorage.removeItem('zahid_theme'); // Reset tema ke default
+            localStorage.clear();
             
+            score = 0; correctCount = 0; qIndex = 0;
+            currentStreak = 0; maxStreak = 0;
+            totalBonusPoints = 0;
+            skipTokens = 0;
             playerProgress = { unlockedMedium: false, unlockedHard: false };
             
-            // Reset UI
             scoreEl.textContent = '0';
             timerEl.textContent = '—';
+            document.getElementById('qIndex').textContent = '0';
+            document.getElementById('correctCount').textContent = '0';
             questionEl.textContent = 'Tekan Mulai Game untuk memulai';
             answersEl.innerHTML = '';
             resultEl.classList.remove('show');
-            document.querySelector('#leaderboard tbody').innerHTML = '';
-            themeSelectorEl.value = 'ceria';
             
             applyLevelGate();
-            applyTheme('ceria');
-            
-            alert('Semua progres telah di-reset!');
-        });
+            document.querySelector('#leaderboard tbody').innerHTML = '';
+            loadQuest();
+            saveBonusPoints();
+            saveSkipTokens();
 
-        playAgain.addEventListener('click', startSession);
+            alert('Semua progres telah di-reset! Akses kini dikunci.');
+            window.location.reload();
+        });
 
         skip.addEventListener('click', ()=>{
             if(!inSession) return;
-            score = Math.max(0, score - 2);
+            
+            if (skipTokens > 0) {
+                skipTokens--;
+                saveSkipTokens();
+                alert(`Lewati soal menggunakan Skip Token. Sisa Token: ${skipTokens}`);
+            } else {
+                score = Math.max(0, score - 2);
+                alert('Lewati soal. Penalti -2 poin (Tidak ada Skip Token).');
+            }
+            
             scoreEl.textContent = score;
-            alert('Lewati soal. Penalti -2 poin.');
+            currentStreak = 0;
+            streakDisplayEl.innerHTML = `Combo: x0`; 
             proceedNext();
         });
 
         showTable.addEventListener('click', ()=>{
             if(operationEl.value !== 'multiplication' && operationEl.value !== 'mixed') {
-                alert('Tabel hanya tersedia untuk Perkalian (×) dan Campuran.');
+                alert('Tabel hanya tersedia untuk mode Perkalian (×) dan Campuran.');
                 return;
             }
-            const max = getRangeForLevel(levelEl.value);
+            const max = getRangeForLevel(levelEl.value); 
             let txt = `Tabel Perkalian (Sampai ${max}×${max}):\n\n`;
             let header = ' X |';
             for(let k=1;k<=max;k++) header += `${k}`.padStart(5);
@@ -638,7 +992,35 @@
             alert(txt);
         });
 
-        // keyboard support: angka 1-4 untuk jawaban
+        // --- AKSES RAHASIA ---
+        function grantAccess(){
+            localStorage.setItem(ACCESS_KEY, 'true');
+            accessGateEl.style.display = 'none';
+            gameLayoutEl.style.display = 'flex'; 
+        }
+
+        function checkCode(code){
+            if (code.toUpperCase().trim() === SECRET_CODE) {
+                gateMessageEl.textContent = 'Akses Diterima! Selamat datang, Zahid!';
+                gateMessageEl.style.color = 'var(--good)';
+                setTimeout(grantAccess, 500);
+            } else {
+                gateMessageEl.textContent = 'Kode Salah. Coba lagi.';
+                gateMessageEl.style.color = 'var(--bad)';
+                secretCodeInput.value = '';
+            }
+        }
+        
+        function checkAccess(){
+            if (localStorage.getItem(ACCESS_KEY) === 'true') {
+                grantAccess();
+            } else {
+                accessGateEl.style.display = 'flex';
+                gameLayoutEl.style.display = 'none';
+            }
+        }
+        // --- END AKSES RAHASIA ---
+
         window.addEventListener('keydown', (e)=>{
             if(!inSession) return;
             const keys = ['1','2','3','4'];
@@ -649,8 +1031,10 @@
             }
         });
         
-        window.addEventListener('DOMContentLoaded', loadProgress);
-
+        window.addEventListener('DOMContentLoaded', ()=>{
+            loadProgress(); 
+            checkAccess();
+        });
     </script>
 </body>
 </html>
